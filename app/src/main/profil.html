@@ -1,8 +1,8 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>ConnectU - Pagina principală</title>
-    <link rel="stylesheet" type="text/css" href="home.css">
+    <title>Profil - ConnectU</title>
+    <link rel="stylesheet" type="text/css" href="profil.css">
     <link rel="stylesheet" type="text/css" href="menu.css">
 </head>
 <body>
@@ -18,15 +18,17 @@
             </ul>
         </nav>
     </header>
-    
+
     <section class="content">
-        <h2>Bine ați venit la ConnectU</h2>
-        <p>Aici puteți interacționa cu alți utilizatori, participa la forumuri și trimite mesaje private.</p>
-        <!-- Adăugați butoanele doar pe pagina de acasă -->
-        <div class="buttons">
-            <a href="register.html" class="button">Înregistrare</a>
-            <a href="login.html" class="button">Conectare</a>
+        <h2>Profilul Meu</h2>
+        <div class="profile-info">
+            <img src="avatar.jpg" alt="Avatarul meu">
+            <h3><span id="nume">Numele Meu</span> <button id="edit-button">Editează</button></h3>
+            <p>Email: <span id="email">nume@exemplu.com</span></p>
+            <p>Data de naștere: <span id="data_nastere">01 ianuarie 2000</span></p>
+            <p>Locație: <span id="locatie">Orașul Meu</span></p>
         </div>
     </section>
+    <script src="edit_profile.js"></script>
 </body>
 </html>

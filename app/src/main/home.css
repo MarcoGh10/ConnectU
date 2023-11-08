@@ -18,25 +18,6 @@ header {
 header h1 {
     margin: 0;
 }
-
-/* Stil pentru meniu de navigare */
-nav ul {
-    list-style-type: none;
-    padding: 0;
-}
-
-nav ul li {
-    display: inline;
-    margin-right: 20px;
-}
-
-/* Stil pentru legăturile din meniu */
-nav ul li a {
-    text-decoration: none;
-    color: #fff;
-}
-
-/* Stil pentru conținutul paginii */
 .content {
     max-width: 800px;
     margin: 0 auto;

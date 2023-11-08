@@ -1,0 +1,63 @@
+/* Stil pentru butonul de editare */
+.edit-button {
+    background-color: #0077cc;
+    color: #fff;
+    border: none;
+    padding: 10px 20px;
+    font-size: 16px;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.edit-button:hover {
+    background-color: #0055aa;
+}
+
+/* Restul stilurilor existente pe care le-ați furnizat rămân neschimbate */
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f5f5f5;
+    margin: 0;
+    padding: 0;
+}
+
+header {
+    background-color: #0077cc;
+    color: #fff;
+    text-align: center;
+    padding: 10px 0;
+}
+
+h1 {
+    font-size: 24px;
+}
+
+.section-content {
+    padding: 20px;
+    text-align: center;
+}
+
+.profile-info {
+    background-color: #fff;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    width: 300px;
+    margin: 0 auto;
+}
+
+.profile-info img {
+    max-width: 100%;
+    border-radius: 50%;
+}
+
+.profile-info h3 {
+    font-size: 20px;
+    margin-top: 10px;
+}
+
+.profile-info p {
+    font-size: 14px;
+    margin: 5px 0;
+}

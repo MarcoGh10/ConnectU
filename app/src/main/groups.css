@@ -1,0 +1,101 @@
+/* Stilul paginii "Groups" */
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f5f5f5;
+    margin: 0;
+    padding: 10;
+}
+
+header {
+    background-color: #0077cc;
+    color: #fff;
+    text-align: center;
+    padding: 10px 0;
+}
+
+h1 {
+    font-size: 24px;
+}
+.section-content {
+    padding: 20px;
+}
+
+.group-card {
+    background-color: #fff;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    margin: 10px;
+    display: inline-block;
+    width: calc(33.33% - 20px); /* Afișare a 3 carduri pe rând */
+    text-align: center;
+}
+
+.group-title {
+    font-size: 20px;
+    font-weight: bold;
+    margin-bottom: 10px;
+}
+
+.group-description {
+    font-size: 14px;
+}
+
+.group-link {
+    display: inline-block;
+    background-color: #0077cc;
+    color: #fff;
+    text-decoration: none;
+    padding: 5px 10px;
+    border-radius: 5px;
+    margin-top: 10px;
+    font-weight: bold;
+}
+
+.group-link:hover {
+    background-color: #0055aa;
+}
+
+
+
+
+
+
+
+/* Stilizarea generală a cardurilor de grup */
+.group-card {
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    margin: 10px;
+    padding: 10px;
+    background-color: #fff;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    width: 300px;
+}
+
+/* Stilizarea titlului grupului */
+.group-title {
+    font-size: 18px;
+    font-weight: bold;
+    margin-bottom: 10px;
+}
+
+/* Stilizarea descrierii grupului */
+.group-description {
+    font-size: 14px;
+    margin-bottom: 10px;
+}
+
+/* Stilizarea link-urilor către grupuri */
+.group-link {
+    display: block;
+    text-decoration: none;
+    color: #0077cc;
+}
+
+/* Stilizarea link-urilor atunci când sunt hover */
+.group-link:hover {
+    text-decoration: underline;
+    color: #0055aa;
+}
