@@ -1,0 +1,32 @@
+/* Stil pentru meniul de navigare */
+nav {
+    background-color: #0077cc;
+    color: #fff;
+    padding: 10px 0;
+    text-align: center;
+}
+
+nav ul {
+    list-style-type: none;
+    padding: 0;
+}
+
+nav ul li {
+    display: inline;
+    margin-right: 20px;
+}
+
+nav ul li a {
+    text-decoration: none;
+    color: #fff;
+}
+
+/* Stil pentru meniul activ (opțional) */
+nav ul li.active a {
+    font-weight: bold;
+}
+
+/* Stil pentru meniul pe hover (opțional) */
+nav ul li a:hover {
+    text-decoration: underline;
+}

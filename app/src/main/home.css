@@ -1,0 +1,73 @@
+/* Stil pentru întregul corp al paginii */
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f0f0f0;
+    margin: 0;
+    padding: 0;
+}
+
+/* Stil pentru antet (header) */
+header {
+    background-color: #0077cc;
+    color: #fff;
+    padding: 10px 0;
+    text-align: center;
+}
+
+/* Stil pentru logo */
+header h1 {
+    margin: 0;
+}
+
+/* Stil pentru meniu de navigare */
+nav ul {
+    list-style-type: none;
+    padding: 0;
+}
+
+nav ul li {
+    display: inline;
+    margin-right: 20px;
+}
+
+/* Stil pentru legăturile din meniu */
+nav ul li a {
+    text-decoration: none;
+    color: #fff;
+}
+
+/* Stil pentru conținutul paginii */
+.content {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 20px;
+    background-color: #fff;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    border-radius: 5px;
+}
+
+/* Stil pentru titlu și text în conținut */
+.content h2 {
+    color: #0077cc;
+}
+
+.content p {
+    line-height: 1.5;
+}
+
+/* Stil pentru butoane (dacă sunt utilizate) */
+.button {
+    background-color: #0077cc;
+    color: #fff;
+    padding: 10px 20px;
+    border: none;
+    cursor: pointer;
+    border-radius: 4px;
+    text-decoration: none;
+    display: inline-block;
+    text-align: center;
+}
+
+.button:hover {
+    background-color: #0055aa;
+}
