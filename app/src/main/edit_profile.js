@@ -1,14 +1,26 @@
-// Referință către elementul butonului de editare
-const editButton = document.getElementById("edit-button");
+function openEditPopup() {
+    // Afișează pop-up-ul de editare
+    document.getElementById("edit-popup").style.display = "block";
 
-// Ascultă evenimentul de clic pe butonul de editare
-editButton.addEventListener("click", function() {
-    // Permite editarea câmpurilor de text
-    document.getElementById("nume").contentEditable = true;
-    document.getElementById("email").contentEditable = true;
-    document.getElementById("data_nastere").contentEditable = true;
-    document.getElementById("locatie").contentEditable = true;
+    // Preiați valorile actuale și completați câmpurile de editare cu acestea
+    document.getElementById("edit_nume").value = document.getElementById("nume").innerText;
+    document.getElementById("edit_email").value = document.getElementById("email").innerText;
+    document.getElementById("edit_data_nastere").value = document.getElementById("data_nastere").innerText;
+    document.getElementById("edit_locatie").value = document.getElementById("locatie").innerText;
+}
 
-    // Dezactivează butonul de editare
-    editButton.disabled = true;
-});
+function closeEditPopup() {
+    // Ascunde pop-up-ul de editare
+    document.getElementById("edit-popup").style.display = "none";
+}
+
+function saveProfileChanges() {
+    // Salvare modificări
+    document.getElementById("nume").innerText = document.getElementById("edit_nume").value;
+    document.getElementById("email").innerText = document.getElementById("edit_email").value;
+    document.getElementById("data_nastere").innerText = document.getElementById("edit_data_nastere").value;
+    document.getElementById("locatie").innerText = document.getElementById("edit_locatie").value;
+
+    // Închide pop-up-ul de editare
+    closeEditPopup();
+}
