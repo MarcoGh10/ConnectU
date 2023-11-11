@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Înregistrare</title>
+    <link rel="stylesheet" type="text/css" href="register.css">
+</head>
+<body>
+    <div class="register-container">
+        <div class="register-info">
+            <h1>ConnectU</h1>
+            <p>Bine ați venit pe ConnectU! Înregistrați-vă pentru a face parte din comunitatea noastră, pentru a participa la discuții și pentru a cunoaște oameni noi.</p>
+        </div>
+        <div class="register-form">
+            <form action="/register" method="post">
+                <h2>Înregistrare</h2>
+                <input type="text" name="username" placeholder="Nume de utilizator" required>
+                <input type="email" name="email" placeholder="Adresă de email" required>
+                <input type="password" name="password" placeholder="Parolă" required>
+                <input type="password" name="conpassword" placeholder="Confirmare Parolă" required>
+                <button type="submit">Înregistrare</button>
+                <p>Aveți deja un cont? <a href="login.html">Conectare</a></p>
+            </form>
+        </div>
+    </div>
+    <script src="verificare.js"></script>
+</body>
+</html>
