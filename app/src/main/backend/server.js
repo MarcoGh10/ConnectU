@@ -4,7 +4,6 @@ const bodyParser = require('body-parser');
 const bcrypt = require('bcrypt');
 const session = require('express-session');
 const port = 3000;
-const express = require('express');
 const http = require('http');
 const socketIO = require('socket.io');
 const path = require('path');
@@ -136,8 +135,10 @@ function getUserByEmail(email) {
         });
     });
 }
-
-// Porniți serverul
-app.listen(port, () => {
+app.get('/', (req, res) => {
+    res.sendFile(__dirname + '/login.html');
+  });
+  
+  app.listen(port, () => {
     console.log(`Serverul ascultă la adresa http://localhost:${port}`);
 });
