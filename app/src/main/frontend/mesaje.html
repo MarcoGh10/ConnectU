@@ -1,8 +1,11 @@
+<!-- mesaje.html -->
 <!DOCTYPE html>
 <html>
 <head>
     <title>Mesagerie privată</title>
     <link rel="stylesheet" type="text/css" href="menu.css">
+    <link rel="stylesheet" type="text/css" href="mesaje.css">
+</head>
 <body>
     <header>
         <h1>Mesaje</h1>
@@ -16,10 +19,21 @@
             </ul>
         </nav>
     </header>
-    <div id="chat">
-        <!-- Mesaje vor fi afișate aici -->
+    <div id="conversations">
+        <!-- Lista cu conversații va fi afișată aici -->
+        <ul id="listaConversatii">
+            <!-- Elementele de conversație vor fi adăugate aici dinamic -->
+        </ul>
+        <!-- Formular pentru a adăuga o conversație nouă -->
+        <form id="formConversatie">
+            <input type="text" id="numeConversatie" placeholder="Numele conversației" required>
+            <button type="submit">Creează o conversație nouă</button>
+        </form>
     </div>
-    <input type="text" id="message" placeholder="Scrieți un mesaj...">
-    <button id="send">Trimite</button>
+    
+    <!-- Script pentru gestionarea conversațiilor -->
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+    <script src="/socket.io/socket.io.js"></script>
+    <script src="/app/src/main/js/mesaje.js"></script>
 </body>
 </html>

@@ -1,19 +1,36 @@
 const express = require('express');
 const mysql = require('mysql2');
 const bodyParser = require('body-parser');
-
-const app = express();
+const bcrypt = require('bcrypt');
+const session = require('express-session');
 const port = 3000;
+const express = require('express');
+const http = require('http');
+const socketIO = require('socket.io');
+const path = require('path');
+const app = express();
+const server = http.createServer(app);
+const io = socketIO(server);
 
+app.get('/', (req, res) => {
+    res.sendFile(path.join(__dirname, '/mesaje.html'));
+});
 // Middleware pentru a parsa corpul cererilor HTTP POST
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 
+// Middleware pentru sesiuni
+app.use(session({
+    secret: 'secretul_sesiunii',
+    resave: false,
+    saveUninitialized: true
+}));
+
 // Configurați conexiunea la baza de date
 const db = mysql.createConnection({
     host: 'localhost',
-    user: 'root',
-    password: 'Marco12345',
+    user: 'sqluser',
+    password: 'password',
     database: 'connectu_db'
 });
 
@@ -27,48 +44,61 @@ db.connect((err) => {
 });
 
 // Rute pentru înregistrare
-app.post('/register', (req, res) => {
-    const { username, email, password } = req.body;
+app.post('/register', async (req, res) => {
+    try {
+        const { username, email, password } = req.body;
 
-    // Hash parola sau folosiți altă metodă de securitate
-    const hashedPassword = password; // Adăugați logica de hash aici
-
-    // Executați interogarea MySQL pentru a insera datele
-    const sql = `INSERT INTO utilizatori (nume_utilizator, adresa_email, parola) VALUES ('${username}', '${email}', '${hashedPassword}')`;
-
-    db.query(sql, (err, result) => {
-        if (err) {
-            console.error('Eroare la inserarea datelor:', err);
-            res.status(500).send('Eroare la înregistrare');
-            return;
+        // Verificați dacă utilizatorul există deja
+        const existingUser = await getUserByEmail(email);
+        if (existingUser) {
+            return res.status(400).json({ error: 'Acest email este deja înregistrat.' });
         }
 
-        console.log('Înregistrare reușită');
-        res.status(200).send('Înregistrare reușită');
-    });
-});
+        // Hash parola
+        const hashedPassword = await bcrypt.hash(password, 10);
 
-// Porniți serverul
-app.listen(port, () => {
-    console.log(`Serverul ascultă la adresa http://localhost:${port}`);
-});
+        // Executați interogarea MySQL pentru a insera datele
+        const sql = 'INSERT INTO utilizatori (nume_utilizator, adresa_email, parola) VALUES (?, ?, ?)';
+        db.query(sql, [username, email, hashedPassword], (err, result) => {
+            if (err) {
+                console.error('Eroare la inserarea datelor:', err);
+                res.status(500).json({ error: 'Eroare la înregistrare' });
+                return;
+            }
 
-const express = require('express');
-const bodyParser = require('body-parser');
-// Middleware pentru a parsa corpul cererilor HTTP POST
-app.use(bodyParser.urlencoded({ extended: true }));
-app.use(bodyParser.json());
-
-// Funcție middleware de verificare a autentificării
-function verificaAutentificare(req, res, next) {
-    // Aici ar trebui să verificați dacă utilizatorul este autentificat, de exemplu, folosind sesiuni sau token-uri JWT
-    // În exemplul de mai jos, verificăm doar dacă există un utilizator simulat într-o variabilă de sesiune
-    if (!req.session || !req.session.user) {
-        // Utilizatorul nu este autentificat, redirecționează către pagina de autentificare
-        return res.redirect('/login.html');
+            console.log('Înregistrare reușită');
+            res.status(200).json({ message: 'Înregistrare reușită' });
+        });
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ error: 'Eroare la înregistrare' });
     }
-    next();
-}
+});
+
+// Rute pentru autentificare și deconectare
+app.post('/login', async (req, res) => {
+    try {
+        const { email, password } = req.body;
+
+        // Obțineți utilizatorul după adresa de email
+        const user = await getUserByEmail(email);
+
+        // Verificați parola utilizatorului (utilizând bcrypt.compare)
+        const isPasswordValid = user ? await bcrypt.compare(password, user.parola) : false;
+
+        if (!user || !isPasswordValid) {
+            return res.status(401).json({ error: 'Adresa de email sau parolă incorectă.' });
+        }
+
+        // Setăm sesiunea pentru a simula autentificarea
+        req.session.user = { id: user.id, username: user.nume_utilizator, email: user.adresa_email };
+
+        res.status(200).json({ message: 'Autentificare reușită' });
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ error: 'Eroare la autentificare' });
+    }
+});
 
 // Rute pentru pagini
 app.get('/', verificaAutentificare, (req, res) => {
@@ -81,16 +111,31 @@ app.get('/login.html', (req, res) => {
     res.sendFile(__dirname + '/login.html');
 });
 
-// Rute pentru autentificare și înregistrare
-app.post('/login', (req, res) => {
-    // Procesează autentificarea și redirecționează la pagina principală dacă este reușită
-    // Aici trebuie să verificați credențialele utilizatorului și să îl autentificați într-un mod adecvat
-    // În exemplul de mai jos, doar setăm o variabilă de sesiune pentru a simula autentificarea
-    req.session.user = { username: req.body.username };
-    res.redirect('/');
-});
+// Funcție middleware de verificare a autentificării
+function verificaAutentificare(req, res, next) {
+    if (!req.session || !req.session.user) {
+        return res.redirect('/login.html');
+    }
+    next();
+}
 
-// Alte rute pentru înregistrare, deconectare, etc.
+// Funcție pentru a obține utilizatorul după adresa de email
+function getUserByEmail(email) {
+    return new Promise((resolve, reject) => {
+        const sql = 'SELECT * FROM utilizatori WHERE adresa_email = ?';
+        db.query(sql, [email], (err, results) => {
+            if (err) {
+                reject(err);
+                return;
+            }
+            if (results.length > 0) {
+                resolve(results[0]);
+            } else {
+                resolve(null);
+            }
+        });
+    });
+}
 
 // Porniți serverul
 app.listen(port, () => {

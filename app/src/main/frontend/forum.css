@@ -1,0 +1,44 @@
+/* forum.css */
+
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: #f8f8f8;
+    margin: 0;
+    padding: 0;
+}
+
+header {
+    background-color: #0077cc;
+    color: #fff;
+    text-align: center;
+    padding: 10px 0;
+}
+
+h1 {
+    font-size: 24px;
+}
+
+ul {
+    list-style-type: none;
+    padding: 0;
+    margin: 20px;
+}
+
+ul li {
+    margin-bottom: 10px;
+}
+
+ul li a {
+    display: block;
+    padding: 10px;
+    background-color: #fff;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    text-decoration: none;
+    color: #333;
+}
+
+ul li a:hover {
+    background-color: #0077cc;
+    color: #fff;
+}

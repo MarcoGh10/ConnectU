@@ -1,0 +1,62 @@
+/* mesaje.css */
+
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: #f8f8f8;
+    margin: 0;
+    padding: 0;
+}
+
+header {
+    background-color: #0077cc;
+    color: #fff;
+    text-align: center;
+    padding: 10px 0;
+}
+
+h1 {
+    font-size: 24px;
+}
+
+
+
+#conversations {
+    max-width: 600px;
+    margin: 20px auto;
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+}
+
+#listaConversatii {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+}
+
+#listaConversatii li {
+    margin-bottom: 10px;
+}
+
+#formConversatie {
+    margin-top: 20px;
+}
+
+#formConversatie input {
+    padding: 10px;
+    margin-right: 10px;
+}
+
+#formConversatie button {
+    padding: 10px;
+    background-color: #0077cc;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+#formConversatie button:hover {
+    background-color: #00557e;
+}
