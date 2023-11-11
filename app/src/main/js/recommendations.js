@@ -6,16 +6,16 @@ document.addEventListener('DOMContentLoaded', function () {
     // Afișează recomandările în HTML
     const recommendedGroupsList = document.getElementById('recommendedGroups');
     const recommendedForumsList = document.getElementById('recommendedForums');
+    
+    // recommendations.js (sau numele fișierului tău JavaScript)
+function joinGroup(groupName) {
+    // Adaugă aici logica pentru a adera la grup
+    alert('Te-ai alăturat grupului ' + groupName);
+}
 
-    recommendedGroups.forEach(group => {
-        const li = document.createElement('li');
-        li.textContent = group;
-        recommendedGroupsList.appendChild(li);
-    });
+function joinForum(forumName) {
+    // Adaugă aici logica pentru a adera la forum
+    alert('Te-ai alăturat forumului ' + forumName);
+}
 
-    recommendedForums.forEach(forum => {
-        const li = document.createElement('li');
-        li.textContent = forum;
-        recommendedForumsList.appendChild(li);
-    });
 });

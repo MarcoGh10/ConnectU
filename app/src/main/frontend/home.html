@@ -30,17 +30,30 @@
         <p>Aici puteți interacționa cu alți utilizatori, participa la forumuri și trimite mesaje private.</p>
 
         <!-- Afișează recomandări doar dacă utilizatorul este logat -->
-        <div class="recommendations">
-            <h3>Recomandări</h3>
-            <p>Grupuri recomandate:</p>
-            <ul id="recommendedGroups">
-                <!-- Grupuri recomandate vor fi afișate aici -->
-            </ul>
-            <p>Forumuri recomandate:</p>
-            <ul id="recommendedForums">
-                <!-- Forumuri recomandate vor fi afișate aici -->
-            </ul>
-        </div>
+       <!-- Adaugă butoane de "Join" pentru grupuri și forumuri -->
+    <ul id="recommendedGroups">
+        <li class="recommended-item">
+            <span>Nume Grup 1</span>
+            <button class="join-button" onclick="joinGroup('group1')">Join</button>
+        </li>
+        <li class="recommended-item">
+          <span>Nume Grup 2</span>
+         <button class="join-button" onclick="joinGroup('group2')">Join</button>
+        </li>
+    <!-- Alte elemente recomandate pentru grupuri -->
+    </ul>
+
+    <ul id="recommendedForums">
+        <li class="recommended-item">
+            <span>Nume Forum 1</span>
+            <button class="join-button" onclick="joinForum('forum1')">Join</button>
+        </li>
+        <li class="recommended-item">
+            <span>Nume Forum 2</span>
+            <button class="join-button" onclick="joinForum('forum2')">Join</button>
+        </li>
+    <!-- Alte elemente recomandate pentru forumuri -->
+    </ul>
     </section>
 
     <script src="/app/src/main/js/recommendations.js"></script>
