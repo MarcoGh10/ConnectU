@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Evenimente - ConnectU</title>
+    <link rel="stylesheet" type="text/css" href="menu.css">
+    <link rel="stylesheet" type="text/css" href="events.css">
+</head>
+<body>
+    <header>
+        <h1>ConnectU</h1>
+        <nav>
+            <ul>
+                <li><a href="home.html">Acasă</a></li>
+                <li><a href="forum.html">Forumuri</a></li>
+                <li><a href="mesaje.html">Mesaje</a></li>
+                <li><a href="events.html">Evenimente</a></li>
+                <li><a href="profil.html">Profil</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <section class="content">
+        <h2>Evenimente</h2>
+        <p>În această secțiune, puteți explora și participa la diferite evenimente organizate.</p>
+        <button id="openCreateEventPopup">Creează Eveniment</button>
+
+    <div id="createEventPopup" class="popup">
+        <form id="createEventForm" class="popup-content">
+            <span class="close" id="closeCreateEventPopup">&times;</span>
+            <input type="text" id="eventTitle" placeholder="Titlul evenimentului" required>
+            <textarea id="eventDescription" placeholder="Descrierea evenimentului" required></textarea>
+            <input type="datetime-local" id="eventDateTime" required>
+            <button type="submit">Creează Eveniment</button>
+        </form>
+    </div>
+        <ul>
+            <li class="event-card">
+                <h3 class="event-title"><a class="event-link" href="eveniment-1.html">Evenimentul 1</a></h3>
+                <p class="event-description">Aceasta este o descriere pentru Evenimentul 1. Aici puteți adăuga detalii despre locație, orar și tematica evenimentului.</p>
+            </li>
+            <li class="event-card">
+                <h3 class="event-title"><a class="event-link" href="eveniment-2.html">Evenimentul 2</a></h3>
+                <p class="event-description">Aceasta este o descriere pentru Evenimentul 2. Aici puteți adăuga detalii despre locație, orar și tematica evenimentului.</p>
+            </li>
+        </ul>
+    </section>
+    <script src="/app/src/main/js/events.js"></script>
+</body>
+</html>

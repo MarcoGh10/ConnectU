@@ -3,29 +3,26 @@ const mysql = require('mysql2');
 const bodyParser = require('body-parser');
 const bcrypt = require('bcrypt');
 const session = require('express-session');
-const port = 3000;
 const http = require('http');
 const socketIO = require('socket.io');
 const path = require('path');
+
 const app = express();
 const server = http.createServer(app);
 const io = socketIO(server);
 
-app.get('/', (req, res) => {
-    res.sendFile(path.join(__dirname, '/mesaje.html'));
-});
-// Middleware pentru a parsa corpul cererilor HTTP POST
+const port = 3000;
+
+app.use(express.static(path.join(__dirname, 'public')));
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 
-// Middleware pentru sesiuni
 app.use(session({
     secret: 'secretul_sesiunii',
     resave: false,
     saveUninitialized: true
 }));
 
-// Configurați conexiunea la baza de date
 const db = mysql.createConnection({
     host: 'localhost',
     user: 'sqluser',
@@ -33,7 +30,6 @@ const db = mysql.createConnection({
     database: 'connectu_db'
 });
 
-// Conectați-vă la baza de date
 db.connect((err) => {
     if (err) {
         console.error('Eroare la conectarea la baza de date:', err);
@@ -42,21 +38,20 @@ db.connect((err) => {
     console.log('Conectat la baza de date MySQL');
 });
 
-// Rute pentru înregistrare
 app.post('/register', async (req, res) => {
     try {
         const { username, email, password } = req.body;
 
-        // Verificați dacă utilizatorul există deja
+        // Verificați dacă utilizatorul există deja în baza de date
         const existingUser = await getUserByEmail(email);
         if (existingUser) {
             return res.status(400).json({ error: 'Acest email este deja înregistrat.' });
         }
 
-        // Hash parola
+        // Hash parola utilizând bcrypt
         const hashedPassword = await bcrypt.hash(password, 10);
 
-        // Executați interogarea MySQL pentru a insera datele
+        // Executați interogarea MySQL pentru a insera datele în baza de date
         const sql = 'INSERT INTO utilizatori (nume_utilizator, adresa_email, parola) VALUES (?, ?, ?)';
         db.query(sql, [username, email, hashedPassword], (err, result) => {
             if (err) {
@@ -74,22 +69,21 @@ app.post('/register', async (req, res) => {
     }
 });
 
-// Rute pentru autentificare și deconectare
 app.post('/login', async (req, res) => {
     try {
         const { email, password } = req.body;
 
-        // Obțineți utilizatorul după adresa de email
+        // Obțineți utilizatorul din baza de date după adresa de email
         const user = await getUserByEmail(email);
 
-        // Verificați parola utilizatorului (utilizând bcrypt.compare)
+        // Verificați dacă există utilizatorul și dacă parola este corectă utilizând bcrypt
         const isPasswordValid = user ? await bcrypt.compare(password, user.parola) : false;
 
         if (!user || !isPasswordValid) {
             return res.status(401).json({ error: 'Adresa de email sau parolă incorectă.' });
         }
 
-        // Setăm sesiunea pentru a simula autentificarea
+        // Setarea sesiunii pentru a simula autentificarea
         req.session.user = { id: user.id, username: user.nume_utilizator, email: user.adresa_email };
 
         res.status(200).json({ message: 'Autentificare reușită' });
@@ -99,26 +93,7 @@ app.post('/login', async (req, res) => {
     }
 });
 
-// Rute pentru pagini
-app.get('/', verificaAutentificare, (req, res) => {
-    // Pagina principală (doar accesibilă utilizatorilor autentificați)
-    res.sendFile(__dirname + '/home.html');
-});
-
-app.get('/login.html', (req, res) => {
-    // Pagina de autentificare
-    res.sendFile(__dirname + '/login.html');
-});
-
-// Funcție middleware de verificare a autentificării
-function verificaAutentificare(req, res, next) {
-    if (!req.session || !req.session.user) {
-        return res.redirect('/login.html');
-    }
-    next();
-}
-
-// Funcție pentru a obține utilizatorul după adresa de email
+// Funcție pentru a obține utilizatorul din baza de date după adresa de email
 function getUserByEmail(email) {
     return new Promise((resolve, reject) => {
         const sql = 'SELECT * FROM utilizatori WHERE adresa_email = ?';
@@ -135,10 +110,85 @@ function getUserByEmail(email) {
         });
     });
 }
+
+app.get('/home', async (req, res) => {
+    try {
+        if (!req.session || !req.session.user) {
+            return res.redirect('/login.html');
+        }
+
+        const evenimenteRecomandate = await getRecommendedEvents();
+        
+        res.render('home', { evenimente: evenimenteRecomandate });
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ error: 'Eroare la afișarea paginii home' });
+    }
+});
+
+app.post('/create-event', async (req, res) => {
+    try {
+        const { titlu, descriere, data_eveniment } = req.body;
+
+        // Execută interogarea MySQL pentru a insera datele evenimentului
+        const sql = 'INSERT INTO evenimente (titlu, descriere, data_eveniment) VALUES (?, ?, ?)';
+        db.query(sql, [titlu, descriere, data_eveniment], (err, result) => {
+            if (err) {
+                console.error('Eroare la inserarea evenimentului:', err);
+                res.status(500).json({ error: 'Eroare la crearea evenimentului' });
+                return;
+            }
+
+            console.log('Eveniment creat cu succes');
+            res.status(200).json({ message: 'Eveniment creat cu succes' });
+        });
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ error: 'Eroare la crearea evenimentului' });
+    }
+});
+
+app.get('/recommended-events', async (req, res) => {
+    try {
+        const sql = 'SELECT * FROM evenimente';
+        db.query(sql, (err, results) => {
+            if (err) {
+                console.error('Eroare la obținerea evenimentelor:', err);
+                res.status(500).json({ error: 'Eroare la obținerea evenimentelor' });
+                return;
+            }
+
+            console.log('Evenimentele obținute cu succes');
+            res.status(200).json(results);
+        });
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ error: 'Eroare la obținerea evenimentelor' });
+    }
+});
+
+// Funcție pentru a obține evenimentele recomandate
+function getRecommendedEvents() {
+    return new Promise((resolve, reject) => {
+        const sql = 'SELECT * FROM evenimente';
+        db.query(sql, (err, results) => {
+            if (err) {
+                reject(err);
+                return;
+            }
+            resolve(results);
+        });
+    });
+}
+const path = require('path');
 app.get('/', (req, res) => {
-    res.sendFile(__dirname + '/login.html');
-  });
-  
-  app.listen(port, () => {
+    res.sendFile(path.join(__dirname, '/app/src/main/frontend/mesaje.html'));
+});
+const path = require('path');
+app.get('/login.html', (req, res) => {
+    res.sendFile(path.join(__dirname, '/app/src/main/frontend/login.html'));
+});
+
+app.listen(port, () => {
     console.log(`Serverul ascultă la adresa http://localhost:${port}`);
 });

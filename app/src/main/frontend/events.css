@@ -1,0 +1,130 @@
+/* Resetare stiluri implicite ale browserului */
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f5f5f5;
+    margin: 20px;
+    padding: 0;
+}
+
+/* Stilizare antet */
+header {
+    background-color: #0077cc;
+    color: #fff;
+    text-align: center;
+    padding: 10px 0;
+}
+
+h1 {
+    font-size: 24px;
+}
+
+/* Stilizare conținut secțiune */
+.section-content {
+    padding: 20px;
+}
+
+/* Stilizare carduri eveniment */
+.event-card {
+    list-style: none; /* Elimină punctul înainte de listă */
+    background-color: #fff;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    margin-bottom: 20px; /* Spațiere între carduri */
+}
+/* Stilizare titlu eveniment */
+.event-title {
+    font-size: 20px;
+    font-weight: bold;
+    margin-left: 10px; 
+    margin-bottom: 10px;
+}
+
+/* Stilizare descriere eveniment */
+.event-description {
+    font-size: 14px;
+}
+
+/* Stilizare linkuri eveniment */
+.event-link {
+    display: inline-block;
+    background-color: #0077cc;
+    color: #fff;
+    text-decoration: none;
+    padding: 5px 10px;
+    border-radius: 5px;
+    margin-top: 10px;
+    font-weight: bold;
+}
+
+.event-link:hover {
+    background-color: #0055aa;
+}
+
+#openCreateEventPopup {
+    display: inline-block;
+    padding: 10px 20px;
+    margin-top: 10px; /* Ajustare pentru a plasa butonul dedesubt */
+    background-color: #0077cc;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    text-align: center;
+    text-decoration: none;
+    font-size: 16px;
+}
+
+/* Stilizare fundal popup */
+.popup-content {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: #f9f9f9;
+    padding: 20px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    z-index: 1;
+}
+
+.popup-content input[type="text"],
+.popup-content textarea,
+.popup-content input[type="datetime-local"],
+.popup-content button[type="submit"] {
+    display: block;
+    margin-bottom: 10px;
+    width: 100%;
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+    font-size: 16px;
+}
+
+.popup-content button[type="submit"] {
+    background-color: #0077cc;
+    color: white;
+    border: none;
+    cursor: pointer;
+}
+
+.popup-content button[type="submit"]:hover {
+    background-color: #0055aa;
+}
+
+/* Stilizare buton închidere popup */
+.close {
+    color: #aaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+}
+
+.close:hover,
+.close:focus {
+    color: black;
+    text-decoration: none;
+    cursor: pointer;
+}

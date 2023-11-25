@@ -6,6 +6,7 @@
     <title>ConnectU</title>
     <link rel="stylesheet" type="text/css" href="home.css">
     <link rel="stylesheet" type="text/css" href="menu.css">
+    <link rel="stylesheet" type="text/css" href="events.css">
 </head>
 <body>
     <header>
@@ -15,13 +16,12 @@
                 <li><a href="home.html">Acasă</a></li>
                 <li><a href="forum.html">Forumuri</a></li>
                 <li><a href="mesaje.html">Mesaje</a></li>
-                <li><a href="groups.html">Grupuri</a></li>
+                <li><a href="events.html">Evenimente</a></li>
                 <li><a href="profil.html">Profil</a></li>
             </ul>
         </nav>
         <div class="user-profile">
             <span>Nume Utilizator</span>
-            <img src="avatar.jpg" alt="Avatarul meu">
         </div>
     </header>
 
@@ -29,34 +29,23 @@
         <h2>Bine ați venit la ConnectU</h2>
         <p>Aici puteți interacționa cu alți utilizatori, participa la forumuri și trimite mesaje private.</p>
 
-        <!-- Afișează recomandări doar dacă utilizatorul este logat -->
-       <!-- Adaugă butoane de "Join" pentru grupuri și forumuri -->
-    <ul id="recommendedGroups">
-        <li class="recommended-item">
-            <span>Nume Grup 1</span>
-            <button class="join-button" onclick="joinGroup('group1')">Join</button>
-        </li>
-        <li class="recommended-item">
-          <span>Nume Grup 2</span>
-         <button class="join-button" onclick="joinGroup('group2')">Join</button>
-        </li>
-    <!-- Alte elemente recomandate pentru grupuri -->
-    </ul>
-
-    <ul id="recommendedForums">
-        <li class="recommended-item">
-            <span>Nume Forum 1</span>
-            <button class="join-button" onclick="joinForum('forum1')">Join</button>
-        </li>
-        <li class="recommended-item">
-            <span>Nume Forum 2</span>
-            <button class="join-button" onclick="joinForum('forum2')">Join</button>
-        </li>
-    <!-- Alte elemente recomandate pentru forumuri -->
-    </ul>
+        <!-- Afișează carduri pentru evenimente -->
+        <div class="event-cards">
+            <div class="event-card">
+                <h3 class="event-title">Nume Eveniment 1</h3>
+                <p class="event-description">Descriere pentru Eveniment 1.</p>
+                <button class="join-button" onclick="joinEvent('event1')">Participă</button>
+            </div>
+            <div class="event-card">
+                <h3 class="event-title">Nume Eveniment 2</h3>
+                <p class="event-description">Descriere pentru Eveniment 2.</p>
+                <button class="join-button" onclick="joinEvent('event2')">Participă</button>
+            </div>
+            <!-- Alte carduri pentru evenimente -->
+        </div>
     </section>
 
-    <script src="/app/src/main/js/recommendations.js"></script>
+    <!-- Include scripturile JavaScript necesare pentru a gestiona acțiunile butoanelor -->
+    <script src="/app/src/main/js/events.js"></script>
 </body>
 </html>
-
