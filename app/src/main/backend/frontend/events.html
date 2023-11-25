@@ -24,24 +24,18 @@
         <p>În această secțiune, puteți explora și participa la diferite evenimente organizate.</p>
         <button id="openCreateEventPopup">Creează Eveniment</button>
 
-    <div id="createEventPopup" class="popup">
-        <form id="createEventForm" class="popup-content">
-            <span class="close" id="closeCreateEventPopup">&times;</span>
-            <input type="text" id="eventTitle" placeholder="Titlul evenimentului" required>
-            <textarea id="eventDescription" placeholder="Descrierea evenimentului" required></textarea>
-            <input type="datetime-local" id="eventDateTime" required>
-            <button type="submit">Creează Eveniment</button>
-        </form>
-    </div>
-        <ul>
-            <li class="event-card">
-                <h3 class="event-title"><a class="event-link" href="eveniment-1.html">Evenimentul 1</a></h3>
-                <p class="event-description">Aceasta este o descriere pentru Evenimentul 1. Aici puteți adăuga detalii despre locație, orar și tematica evenimentului.</p>
-            </li>
-            <li class="event-card">
-                <h3 class="event-title"><a class="event-link" href="eveniment-2.html">Evenimentul 2</a></h3>
-                <p class="event-description">Aceasta este o descriere pentru Evenimentul 2. Aici puteți adăuga detalii despre locație, orar și tematica evenimentului.</p>
-            </li>
+        <div id="createEventPopup" class="popup">
+            <form id="createEventForm" class="popup-content">
+                <span class="close" id="closeCreateEventPopup">&times;</span>
+                <input type="text" id="eventTitle" placeholder="Titlul evenimentului" required>
+                <textarea id="eventDescription" placeholder="Descrierea evenimentului" required></textarea>
+                <input type="datetime-local" id="eventDateTime" required>
+                <button type="submit">Creează Eveniment</button>
+            </form>
+        </div>
+
+        <ul id="eventsList">
+            <!-- Aici vor fi afișate evenimentele -->
         </ul>
     </section>
     <script src="/app/src/main/backend/js/events.js"></script>

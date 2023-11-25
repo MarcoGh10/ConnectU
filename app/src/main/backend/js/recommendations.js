@@ -1,21 +1,39 @@
-document.addEventListener('DOMContentLoaded', function () {
-    // Simulăm datele de recomandări (într-un scenariu real, aceste date ar veni din server)
-    const recommendedGroups = ['Grup1', 'Grup2', 'Grup3'];
-    const recommendedForums = ['Forum1', 'Forum2', 'Forum3'];
+document.addEventListener('DOMContentLoaded', () => {
+    const eventsList = document.querySelector('.event-cards');
 
-    // Afișează recomandările în HTML
-    const recommendedGroupsList = document.getElementById('recommendedGroups');
-    const recommendedForumsList = document.getElementById('recommendedForums');
-    
-    // recommendations.js (sau numele fișierului tău JavaScript)
-function joinGroup(groupName) {
-    // Adaugă aici logica pentru a adera la grup
-    alert('Te-ai alăturat grupului ' + groupName);
-}
+    // Funcție pentru a afișa evenimentele pe pagină
+    function displayEvents(events) {
+        eventsList.innerHTML = ''; // Curățăm lista de evenimente existente
 
-function joinForum(forumName) {
-    // Adaugă aici logica pentru a adera la forum
-    alert('Te-ai alăturat forumului ' + forumName);
-}
+        events.forEach((event, index) => {
+            const eventCard = document.createElement('div');
+            eventCard.classList.add('event-card');
+            eventCard.innerHTML = `
+                <h3 class="event-title">${event.title}</h3>
+                <p class="event-description">${event.description}</p>
+                <button class="join-button" onclick="joinEvent('${event.id}')">Participă</button>
+            `;
+            eventsList.appendChild(eventCard);
+        });
+    }
 
+    // Funcție pentru a obține evenimentele recomandate de la server
+    function fetchRecommendedEvents() {
+        fetch('/api/recommended-events') // Înlocuiește această cale cu calea reală către server
+            .then(response => response.json())
+            .then(data => {
+                displayEvents(data); // Afișează evenimentele pe pagină
+            })
+            .catch(error => {
+                console.error('Eroare la obținerea evenimentelor:', error);
+            });
+    }
+
+    // Apelăm funcția pentru a obține și afișa evenimentele recomandate la încărcarea paginii
+    fetchRecommendedEvents();
 });
+
+function joinEvent(eventId) {
+    // Poți adăuga aici logica pentru a te alătura unui eveniment specific, folosind eventId
+    console.log(`Te-ai alăturat evenimentului cu ID-ul ${eventId}`);
+}

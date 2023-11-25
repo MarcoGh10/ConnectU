@@ -94,7 +94,6 @@ app.post('/login', async (req, res) => {
     }
 });
 
-// Funcție pentru a obține utilizatorul din baza de date după adresa de email
 function getUserByEmail(email) {
     return new Promise((resolve, reject) => {
         const sql = 'SELECT * FROM utilizatori WHERE adresa_email = ?';
@@ -111,6 +110,7 @@ function getUserByEmail(email) {
         });
     });
 }
+
 
 app.get('/home', async (req, res) => {
     try {
@@ -189,3 +189,23 @@ app.get('/', (req, res) => {
 app.listen(port, () => {
     console.log(`Serverul ruleaza pe http://localhost:${port}`);
 });
+
+app.get('/get-user-profile', async (req, res) => {
+    try {
+        const userEmail = req.session.user.email; // Adresa de email a utilizatorului autentificat
+
+        const userProfile = await getUserByEmail(userEmail); // Obține profilul utilizatorului după email
+
+        if (!userProfile) {
+            return res.status(404).json({ error: 'Profilul utilizatorului nu a fost găsit' });
+        }
+
+        // Trimite datele profilului utilizatorului către client (interfața de utilizator)
+        res.status(200).json(userProfile);
+    } catch (error) {
+        console.error('Eroare la obținerea profilului utilizatorului:', error);
+        res.status(500).json({ error: 'Eroare la obținerea datelor din baza de date' });
+    }
+});
+
+
