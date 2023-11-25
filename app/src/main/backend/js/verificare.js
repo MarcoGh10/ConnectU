@@ -21,7 +21,7 @@ function register() {
     .then(response => response.text())
     .then(message => {
         alert(message);
-        // Aici puteți redirecționa la altă pagină sau face alte acțiuni
+        window.location.href = '/home'; // Redirecționare către pagina de home
     })
     .catch(error => {
         console.error('Eroare la înregistrare:', error);

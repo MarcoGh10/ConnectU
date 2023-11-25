@@ -13,9 +13,10 @@ const io = socketIO(server);
 
 const port = 3000;
 
-app.use(express.static(path.join(__dirname, 'public')));
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
+app.use(express.static(path.join(__dirname, '/frontend')));
+
 
 app.use(session({
     secret: 'secretul_sesiunii',
@@ -61,7 +62,7 @@ app.post('/register', async (req, res) => {
             }
 
             console.log('Înregistrare reușită');
-            res.status(200).json({ message: 'Înregistrare reușită' });
+            res.redirect('/home'); // Redirecționează către pagina de home după înregistrare reușită
         });
     } catch (error) {
         console.error(error);
@@ -86,7 +87,7 @@ app.post('/login', async (req, res) => {
         // Setarea sesiunii pentru a simula autentificarea
         req.session.user = { id: user.id, username: user.nume_utilizator, email: user.adresa_email };
 
-        res.status(200).json({ message: 'Autentificare reușită' });
+        res.redirect('/home');
     } catch (error) {
         console.error(error);
         res.status(500).json({ error: 'Eroare la autentificare' });
@@ -117,14 +118,13 @@ app.get('/home', async (req, res) => {
             return res.redirect('/login.html');
         }
 
-        const evenimenteRecomandate = await getRecommendedEvents();
-        
-        res.render('home', { evenimente: evenimenteRecomandate });
+        res.sendFile(path.join(__dirname, 'frontend', 'home.html'));
     } catch (error) {
         console.error(error);
         res.status(500).json({ error: 'Eroare la afișarea paginii home' });
     }
 });
+
 
 app.post('/create-event', async (req, res) => {
     try {
@@ -180,15 +180,12 @@ function getRecommendedEvents() {
         });
     });
 }
-const path = require('path');
+
 app.get('/', (req, res) => {
-    res.sendFile(path.join(__dirname, '/app/src/main/frontend/mesaje.html'));
-});
-const path = require('path');
-app.get('/login.html', (req, res) => {
-    res.sendFile(path.join(__dirname, '/app/src/main/frontend/login.html'));
+    res.sendFile(path.join(__dirname, '/frontend/login.html'));
 });
 
+
 app.listen(port, () => {
-    console.log(`Serverul ascultă la adresa http://localhost:${port}`);
+    console.log(`Serverul ruleaza pe http://localhost:${port}`);
 });
