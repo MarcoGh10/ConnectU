@@ -16,7 +16,8 @@ const port = 3000;
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 app.use(express.static(path.join(__dirname, '/frontend')));
-app.use(express.static(path.join(__dirname, 'backend', 'js')));
+app.use(express.static(path.join(__dirname, '/js')));
+app.use(express.static('js'));
 
 app.use(session({
     secret: 'secretul_sesiunii',
