@@ -208,3 +208,10 @@ h1 {
 .event-card .join-button:hover {
     background-color: #0055aa;
 }
+.close::before {
+    content: '×';
+    font-size: 28px;
+    font-weight: bold;
+    display: inline-block;
+    margin-right: 5px;
+}
