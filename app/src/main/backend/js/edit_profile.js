@@ -1,10 +1,3 @@
-const closeButton = document.getElementById("closeEditPopupButton");
-
-closeButton.addEventListener("click", () => {
-    closeEditPopup();
-});
-
-
 function openEditPopup() {
     // Afișează pop-up-ul de editare
     document.getElementById("edit-popup").style.display = "block";
@@ -23,6 +16,7 @@ function openEditPopup() {
             console.error('Eroare la preluarea datelor din baza de date:', error);
         });
 }
+
 function closeEditPopup() {
     document.getElementById("edit-popup").style.display = "none";
 }
@@ -57,3 +51,13 @@ function saveProfileChanges() {
         console.error('Completați toate câmpurile pentru a salva profilul.');
     }
 }
+
+// Adaugă evenimentul de click pentru închiderea pop-up-ului
+document.addEventListener('DOMContentLoaded', () => {
+    const closeButton = document.querySelector(".close-button");
+
+    closeButton.addEventListener("click", () => {
+        closeEditPopup();
+    });
+});
+

@@ -13,10 +13,13 @@
                 <li><a href="home.html">Acasă</a></li>
                 <li><a href="forum.html">Forumuri</a></li>
                 <li><a href="mesaje.html">Mesaje</a></li>
-                <li><a href="events.html">Evenimente</a></li>
+                <li class="active"><a href="events.html">Evenimente</a></li>
                 <li><a href="profil.html">Profil</a></li>
             </ul>
         </nav>
+        <div class="user-profile">
+            <span>Nume Utilizator</span>
+        </div>
     </header>
 
     <section class="content">
@@ -30,7 +33,7 @@
                 <input type="text" id="eventTitle" placeholder="Titlul evenimentului" required>
                 <textarea id="eventDescription" placeholder="Descrierea evenimentului" required></textarea>
                 <input type="datetime-local" id="eventDateTime" required>
-                <button type="submit">Creează Eveniment</button>
+                <button type="submit" onclick="createEventForm">Creează Eveniment</button>
             </form>
         </div>
 

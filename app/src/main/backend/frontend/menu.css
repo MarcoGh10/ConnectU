@@ -3,6 +3,7 @@ nav {
     display: flex;
     justify-content: space-between;
     align-items: center;
+    font-family: Arial,sans-serif;
     background-color: #0077cc;
     color: #fff;
     padding: 10px 20px;
@@ -28,15 +29,21 @@ nav ul li a {
     text-decoration: none;
     color: #fff;
     font-size: 16px;
-    font-weight: bold;
+    font-weight: normal; 
+    transition: color 0.3s; 
 }
 
-/* Stil pentru meniul activ (opțional) */
-nav ul li.active a {
-    text-decoration: underline;
-}
 
-/* Stil pentru meniul pe hover (opțional) */
 nav ul li a:hover {
-    text-decoration: underline;
+    color: #000000;
+    transition: transform 0.3s ease-in-out; 
+}
+
+
+nav ul li.active a {
+    font-weight: bold;
+    color: #000; 
+    background-color: #fff; 
+    padding: 5px 10px; 
+    border-radius: 5px; 
 }

@@ -3,7 +3,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Funcție pentru a afișa evenimentele la care utilizatorul a dat "join"
     function displayJoinedEvents(joinedEvents) {
-        joinedEventsList.innerHTML = ''; // Curățăm lista de evenimente la care s-a alăturat utilizatorul
+        joinedEventsList.innerHTML = '';
 
         joinedEvents.forEach(event => {
             const eventItem = document.createElement('li');

@@ -13,25 +13,39 @@
     background-color: #0055aa;
 }
 
-/* Restul stilurilor existente pe care le-ați furnizat rămân neschimbate */
+header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #0077cc;
+    color: #fff;
+    padding: 10px 20px;
+    border-radius: 20px;
+}
+
 body {
     font-family: Arial, sans-serif;
-    background-color: #f5f5f5;
     margin: 20px;
     padding: 0;
 }
 
-header {
-    background-color: #0077cc;
-    color: #fff;
-    text-align: center;
-    padding: 10px 0;
-}
-
 h1 {
     font-size: 24px;
+    margin-left: 10px;
+}
+.user-profile {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end; 
+    margin-right: 10px;
 }
 
+.user-profile span {
+    font-size: 16px;
+    margin-left: 10px; 
+    font-weight: bold; 
+    color: #fff; 
+}
 .section-content {
     padding: 20px;
     text-align: center;
@@ -65,7 +79,7 @@ h1 {
 .button {
     display: inline-block;
     padding: 10px 20px;
-    margin-top: 10px; /* Ajustare pentru a plasa butonul dedesubt */
+    margin-top: 10px;
     border: none;
     border-radius: 5px;
     cursor: pointer;
@@ -136,6 +150,47 @@ h1 {
 
 .close-button:hover {
     color: #333;
+}
+
+/* Stil pentru lista de evenimente la care ai participat */
+.joined-events ul {
+    list-style: none; /* Eliminarea marcării cu punct */
+    padding: 0; /* Eliminarea padding-ului implicit al listei */
+}
+
+/* Stilizare pentru fiecare eveniment în listă */
+.joined-events ul li {
+    background-color: #f9f9f9;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    margin-bottom: 10px; /* Spațiere între elementele listei */
+}
+
+/* Stil pentru titlul evenimentului */
+.joined-events ul li h3 {
+    font-size: 18px;
+    margin-bottom: 8px;
+}
+
+.joined-events ul li p {
+    font-size: 14px;
+    color: #666;
+    margin-bottom: 10px;
+}
+
+.joined-events ul li a {
+    display: inline-block;
+    background-color: #0077cc;
+    color: #fff;
+    text-decoration: none;
+    padding: 5px 10px;
+    border-radius: 5px;
+    font-weight: bold;
+}
+.joined-events ul li a:hover {
+    background-color: #0055aa;
 }
 
 

@@ -5,16 +5,22 @@ document.addEventListener('DOMContentLoaded', () => {
     function displayEvents(events) {
         eventsList.innerHTML = ''; // Curățăm lista de evenimente existente
 
-        events.forEach((event, index) => {
-            const eventCard = document.createElement('div');
-            eventCard.classList.add('event-card');
-            eventCard.innerHTML = `
-                <h3 class="event-title">${event.title}</h3>
-                <p class="event-description">${event.description}</p>
-                <button class="join-button" onclick="joinEvent('${event.id}')">Participă</button>
-            `;
-            eventsList.appendChild(eventCard);
-        });
+        if (events.length === 0) {
+            const noEventsMessage = document.createElement('p');
+            noEventsMessage.textContent = 'Nu sunt evenimente disponibile momentan.';
+            eventsList.appendChild(noEventsMessage);
+        } else {
+            events.forEach(event => {
+                const eventCard = document.createElement('div');
+                eventCard.classList.add('event-card');
+                eventCard.innerHTML = `
+                    <h3 class="event-title">${event.title}</h3>
+                    <p class="event-description">${event.description}</p>
+                    <button class="join-button" onclick="joinEvent('${event.id}')">Participă</button>
+                `;
+                eventsList.appendChild(eventCard);
+            });
+        }
     }
 
     // Funcție pentru a obține evenimentele recomandate de la server
@@ -35,3 +41,4 @@ document.addEventListener('DOMContentLoaded', () => {
 function joinEvent(eventId) {
     console.log(`Te-ai alăturat evenimentului cu ID-ul ${eventId}`);
 }
+
