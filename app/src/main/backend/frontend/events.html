@@ -24,7 +24,7 @@
         <p>În această secțiune, puteți explora și participa la diferite evenimente organizate.</p>
         <button id="openCreateEventPopup">Creează Eveniment</button>
 
-        <div id="createEventPopup" class="popup">
+        <div id="createEventPopup" class="popup" onclick="openCreateEventPopupBtn">
             <form id="createEventForm" class="popup-content">
                 <span class="close" id="closeCreateEventPopup">&times;</span>
                 <input type="text" id="eventTitle" placeholder="Titlul evenimentului" required>
@@ -38,6 +38,6 @@
             <!-- Aici vor fi afișate evenimentele -->
         </ul>
     </section>
-    <script src="/app/src/main/backend/js/events.js"></script>
+    <script src="backend/js/events.js"></script>
 </body>
 </html>

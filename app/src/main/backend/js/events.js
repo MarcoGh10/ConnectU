@@ -5,14 +5,12 @@ document.addEventListener('DOMContentLoaded', () => {
     const createEventForm = document.getElementById('createEventForm');
     const eventsList = document.getElementById('eventsList');
 
-    // Deschiderea popup-ului la clic pe buton
     openCreateEventPopupBtn.addEventListener('click', () => {
-        createEventPopup.style.display = 'block';
+        createEventPopup.classList.add('show-popup');
     });
 
-    // Închiderea popup-ului la clic pe butonul de închidere (X)
     closeCreateEventPopupBtn.addEventListener('click', () => {
-        createEventPopup.style.display = 'none';
+        createEventPopup.classList.remove('show-popup');
     });
 
     // Funcție pentru a afișa evenimentele
@@ -27,6 +25,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 <p class="event-description">${event.descriere}</p>
             `;
             eventsList.appendChild(li);
+
         });
     }
 

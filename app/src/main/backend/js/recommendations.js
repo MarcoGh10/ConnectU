@@ -19,7 +19,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Funcție pentru a obține evenimentele recomandate de la server
     function fetchRecommendedEvents() {
-        fetch('/api/recommended-events') // Înlocuiește această cale cu calea reală către server
+        fetch('/recommended-events')
             .then(response => response.json())
             .then(data => {
                 displayEvents(data); // Afișează evenimentele pe pagină
@@ -29,11 +29,9 @@ document.addEventListener('DOMContentLoaded', () => {
             });
     }
 
-    // Apelăm funcția pentru a obține și afișa evenimentele recomandate la încărcarea paginii
     fetchRecommendedEvents();
 });
 
 function joinEvent(eventId) {
-    // Poți adăuga aici logica pentru a te alătura unui eveniment specific, folosind eventId
     console.log(`Te-ai alăturat evenimentului cu ID-ul ${eventId}`);
 }

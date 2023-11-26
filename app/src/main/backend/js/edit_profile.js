@@ -1,3 +1,10 @@
+const closeButton = document.getElementById("closeEditPopupButton");
+
+closeButton.addEventListener("click", () => {
+    closeEditPopup();
+});
+
+
 function openEditPopup() {
     // Afișează pop-up-ul de editare
     document.getElementById("edit-popup").style.display = "block";
@@ -14,12 +21,13 @@ function openEditPopup() {
         })
         .catch(error => {
             console.error('Eroare la preluarea datelor din baza de date:', error);
-            // Poți afișa un mesaj de eroare sau gestiona altfel situația
         });
+}
+function closeEditPopup() {
+    document.getElementById("edit-popup").style.display = "none";
 }
 
 function saveProfileChanges() {
-    // Colectare date din câmpurile de editare
     const editedProfile = {
         nume: document.getElementById("edit_nume").value,
         email: document.getElementById("edit_email").value,
@@ -27,24 +35,25 @@ function saveProfileChanges() {
         locatie: document.getElementById("edit_locatie").value
     };
 
-    // Trimite datele către server pentru a le salva în baza de date
-    fetch('/update-user-profile', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(editedProfile)
-    })
-    .then(response => response.json())
-    .then(updatedData => {
-        // Poți afișa un mesaj de succes sau gestiona altfel situația
-        console.log('Profilul a fost actualizat:', updatedData);
-    })
-    .catch(error => {
-        console.error('Eroare la salvarea datelor în baza de date:', error);
-        // Poți afișa un mesaj de eroare sau gestiona altfel situația
-    });
-
-    // Închide pop-up-ul de editare
-    closeEditPopup();
+    // Verificare dacă câmpurile sunt completate
+    if (editedProfile.nume !== '' && editedProfile.email !== '' && editedProfile.data_nastere !== '' && editedProfile.locatie !== '') {
+        // Trimite datele către server pentru a le salva în baza de date
+        fetch('/update-user-profile', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(editedProfile)
+        })
+        .then(response => response.json())
+        .then(updatedData => {
+            console.log('Profilul a fost actualizat:', updatedData);
+            closeEditPopup(); // Închide pop-up-ul după ce profilul a fost actualizat cu succes
+        })
+        .catch(error => {
+            console.error('Eroare la salvarea datelor în baza de date:', error);
+        });
+    } else {
+        console.error('Completați toate câmpurile pentru a salva profilul.');
+    }
 }
