@@ -16,7 +16,7 @@ const port = 3000;
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 app.use(express.static(path.join(__dirname, '/frontend')));
-
+app.use(express.static(path.join(__dirname, 'backend', 'js')));
 
 app.use(session({
     secret: 'secretul_sesiunii',
@@ -206,6 +206,10 @@ app.get('/get-user-profile', async (req, res) => {
         console.error('Eroare la obținerea profilului utilizatorului:', error);
         res.status(500).json({ error: 'Eroare la obținerea datelor din baza de date' });
     }
+});
+app.get('/app/src/main/backend/js/events.js', (req, res) => {
+    res.setHeader('Content-Type', 'text/javascript');
+    res.sendFile(__dirname + '/app/src/main/backend/js/events.js');
 });
 
 

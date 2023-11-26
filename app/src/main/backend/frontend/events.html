@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html>
 <head>
     <title>Evenimente - ConnectU</title>
@@ -25,22 +25,27 @@
     <section class="content">
         <h2>Evenimente</h2>
         <p>În această secțiune, puteți explora și participa la diferite evenimente organizate.</p>
-        <button id="openCreateEventPopup">Creează Eveniment</button>
-
-        <div id="createEventPopup" class="popup" onclick="openCreateEventPopupBtn">
+        <div id="createEventPopup" class="popup">
+            <span class="close" id="closeCreateEventPopup">&times;</span>
             <form id="createEventForm" class="popup-content">
-                <span class="close" id="closeCreateEventPopup">&times;</span>
+                <label for="eventTitle">Titlul evenimentului:</label>
                 <input type="text" id="eventTitle" placeholder="Titlul evenimentului" required>
+            
+                <label for="eventDescription">Descrierea evenimentului:</label>
                 <textarea id="eventDescription" placeholder="Descrierea evenimentului" required></textarea>
+            
+                <label for="eventDateTime">Data și ora:</label>
                 <input type="datetime-local" id="eventDateTime" required>
-                <button type="submit" onclick="createEventForm">Creează Eveniment</button>
+            
+                <button type="submit">Creează Eveniment</button>
             </form>
         </div>
+        <button id="openCreateEventPopup">Creează Eveniment</button>
 
         <ul id="eventsList">
             <!-- Aici vor fi afișate evenimentele -->
         </ul>
     </section>
-    <script src="backend/js/events.js"></script>
+    <script src="/app/src/main/backend/js/events.js"></script>
 </body>
 </html>

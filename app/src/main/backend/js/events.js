@@ -6,16 +6,72 @@ document.addEventListener('DOMContentLoaded', () => {
     const eventsList = document.getElementById('eventsList');
 
     openCreateEventPopupBtn.addEventListener('click', () => {
-        createEventPopup.classList.add('show-popup');
+        openPopup(createEventPopup);
     });
 
     closeCreateEventPopupBtn.addEventListener('click', () => {
-        createEventPopup.classList.remove('show-popup');
+        closePopup(createEventPopup);
     });
 
-    // Funcție pentru a afișa evenimentele
-    function displayEvents(events) {
-        eventsList.innerHTML = ''; // Curățăm lista de evenimente existente
+    createEventForm.addEventListener('submit', async (event) => {
+        event.preventDefault();
+        const eventData = collectEventData(); // Colectarea datelor evenimentului din formular
+
+        try {
+            const response = await saveEventData('/create-event', eventData);
+            handleEventCreation(response, createEventPopup, eventsList);
+        } catch (error) {
+            console.error('Eroare:', error);
+        }
+    });
+
+    function openPopup(popupElement) {
+        popupElement.style.display = 'block';
+    }
+
+    function closePopup(popupElement) {
+        popupElement.style.display = 'none';
+    }
+
+    function collectEventData() {
+        const title = document.getElementById('eventTitle').value;
+        const description = document.getElementById('eventDescription').value;
+        const dateTime = document.getElementById('eventDateTime').value;
+
+        return { titlu: title, descriere: description, data_eveniment: dateTime };
+    }
+
+    async function saveEventData(url, data) {
+        return await fetch(url, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(data),
+        });
+    }
+
+    async function handleEventCreation(response, popupElement, listElement) {
+        const data = await response.json();
+        console.log(data.message);
+
+        closePopup(popupElement);
+        refreshEventsList(listElement);
+    }
+
+    function refreshEventsList(listElement) {
+        fetch('/recommended-events')
+            .then((response) => response.json())
+            .then((data) => {
+                displayEvents(data, listElement);
+            })
+            .catch((error) => {
+                console.error('Eroare la obținerea evenimentelor:', error);
+            });
+    }
+
+    function displayEvents(events, listElement) {
+        listElement.innerHTML = '';
 
         events.forEach((event) => {
             const li = document.createElement('li');
@@ -24,55 +80,11 @@ document.addEventListener('DOMContentLoaded', () => {
                 <h3 class="event-title">${event.titlu}</h3>
                 <p class="event-description">${event.descriere}</p>
             `;
-            eventsList.appendChild(li);
-
+            listElement.appendChild(li);
         });
     }
-
-    // Obțineți evenimentele existente și afișați-le la încărcarea paginii
-    fetch('/recommended-events')
-        .then((response) => response.json())
-        .then((data) => {
-            displayEvents(data); // Afișează evenimentele existente
-        })
-        .catch((error) => {
-            console.error('Eroare la obținerea evenimentelor:', error);
-        });
-
-    // Trimiterea datelor către server la trimiterea formularului de creare eveniment
-    createEventForm.addEventListener('submit', async (event) => {
-        event.preventDefault();
-
-        const title = document.getElementById('eventTitle').value;
-        const description = document.getElementById('eventDescription').value;
-        const dateTime = document.getElementById('eventDateTime').value;
-
-        try {
-            const response = await fetch('/create-event', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({ titlu: title, descriere: description, data_eveniment: dateTime }),
-            });
-
-            const data = await response.json();
-            console.log(data.message); // Mesajul primit de la server
-
-            // Închideți popup-ul după ce evenimentul a fost creat cu succes
-            createEventPopup.style.display = 'none';
-
-            // Obțineți și afișați din nou evenimentele actualizate
-            fetch('/recommended-events')
-                .then((response) => response.json())
-                .then((data) => {
-                    displayEvents(data); // Afișează evenimentele actualizate
-                })
-                .catch((error) => {
-                    console.error('Eroare la obținerea evenimentelor:', error);
-                });
-        } catch (error) {
-            console.error('Eroare:', error);
-        }
+s
+    closeCreateEventPopupBtn.addEventListener('click', () => {
+        closePopup(createEventPopup);
     });
 });
