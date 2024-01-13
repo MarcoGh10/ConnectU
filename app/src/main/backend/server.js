@@ -15,9 +15,12 @@ const port = 3000;
 
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
-app.use(express.static(path.join(__dirname, '/frontend')));
-app.use(express.static(path.join(__dirname, '/js')));
-app.use(express.static('js'));
+app.use(express.static(path.join(__dirname, 'frontend')));
+app.use('/js', express.static(path.join(__dirname, 'js')));
+
+// Adaugă tipurile MIME asociate extensiilor în express.static.mime.types
+express.static.mime.types['js'] = 'application/javascript';
+express.static.mime.types['css'] = 'text/css';
 
 app.use(session({
     secret: 'secretul_sesiunii',
@@ -92,6 +95,30 @@ app.post('/login', async (req, res) => {
     } catch (error) {
         console.error(error);
         res.status(500).json({ error: 'Eroare la autentificare' });
+    }
+});
+
+
+app.post('/logout', (req, res) => {
+    try {
+        // Verifică dacă utilizatorul este autentificat
+        if (!req.session || !req.session.user) {
+            return res.status(401).json({ error: 'Nu există sesiune autentificată' });
+        }
+
+        // Distrugerea sesiunii pentru a realiza deconectarea
+        req.session.destroy((err) => {
+            if (err) {
+                console.error('Eroare la deconectare:', err);
+                res.status(500).json({ error: 'Eroare la deconectare' });
+            } else {
+                console.log('Deconectare reușită');
+                res.status(200).json({ message: 'Deconectare reușită' });
+            }
+        });        
+    } catch (error) {
+        console.error('Eroare la deconectare:', error);
+        res.status(500).json({ error: 'Eroare la deconectare' });
     }
 });
 

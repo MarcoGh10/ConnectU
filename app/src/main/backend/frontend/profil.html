@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Profil - ConnectU</title>
     <link rel="stylesheet" type="text/css" href="profil.css">
-    <link rel="stylesheet" type="text/css" href="menu.css">
+    <link rel="stylesheet" type="text/css" href="menu.css"> 
 </head>
 <body>
     <header>
@@ -20,10 +20,11 @@
             </ul>
         </nav>
         <div class="user-profile">
-            <span>Nume Utilizator</span>
+            <span id="nume_utilizator">Nume Utilizator</span>
         </div>
+        <button class="button button-red" onclick="logout()">Deconectare</button>
     </header>
-    
+
     <section class="content">
         <h2>Profilul Meu</h2>
         <div class="profile-info">
@@ -35,12 +36,11 @@
 
             <button id="edit-button" class="button button-blue" onclick="openEditPopup()">Editează</button>
         </div>
->
+
         <div class="joined-events">
             <h2>Evenimente la care am participat</h2>
             <ul id="joined-events-list">
-                <!-- Aici vor fi afișate evenimentele la care a dat "join" -->
-            </ul>
+                </ul>
         </div>
     </section>
 
@@ -48,22 +48,23 @@
         <div class="popup-content">
             <span class="close-button" onclick="closeEditPopup()">&times;</span>
             <div class="edit-fields">
-                <!-- Adăugați câmpurile de editare aici -->
                 <label for="edit_nume">Nume:</label>
-                <input type="text" id="edit_nume"><br>
+                <input type="text" id="edit_nume" value="Numele Meu"><br>
                 <label for="edit_email">Email:</label>
-                <input type="email" id="edit_email"><br>
+                <input type="email" id="edit_email" value="nume@exemplu.com"><br>
                 <label for="edit_data_nastere">Data de naștere:</label>
-                <input type="date" id="edit_data_nastere"><br>
+                <input type="date" id="edit_data_nastere" value="2000-01-02"><br>
                 <label for="edit_locatie">Locație:</label>
-                <input type="text" id="edit_locatie"><br>
+                <input type="text" id="edit_locatie" value="Orașul Meu"><br>
             </div>
             
             <button class="button button-blue" onclick="saveProfileChanges()">Salvează</button>
         </div>
     </div>
 
-    <script src="/app/src/main/backend/js/edit_profile.js"></script>
+    <script src="/app/src/main/backend/js/logout.js"></script>
     <script src="/app/src/main/backend/js/display_joined_events.js"></script>
+    <script src="/app/src/main/backend/js/edit_profile.js"></script>
+
 </body>
 </html>
