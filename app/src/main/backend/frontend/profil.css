@@ -36,15 +36,15 @@ h1 {
 .user-profile {
     display: flex;
     align-items: center;
-    justify-content: flex-end; 
+    justify-content: flex-end;
     margin-right: 10px;
 }
 
 .user-profile span {
     font-size: 16px;
-    margin-left: 10px; 
-    font-weight: bold; 
-    color: #fff; 
+    margin-left: 10px;
+    font-weight: bold;
+    color: #fff;
 }
 .section-content {
     padding: 20px;
@@ -115,7 +115,7 @@ h1 {
     padding: 20px;
     border-radius: 5px;
     position: relative;
-    text-align: center; 
+    text-align: center;
 }
 
 .edit-fields {

@@ -5,66 +5,49 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Profil - ConnectU</title>
     <link rel="stylesheet" type="text/css" href="profil.css">
-    <link rel="stylesheet" type="text/css" href="menu.css"> 
+    <link rel="stylesheet" type="text/css" href="menu.css">
+    <script src="/js/delete_account.js"></script>
+    <script src="/js/logout.js"></script>
+    <script src="/js/display_joined_events.js"></script>
+    <script src="/js/edit_profile.js"></script>
 </head>
 <body>
-    <header>
-        <h1>ConnectU</h1>
-        <nav>
-            <ul>
-                <li><a href="home.html">Acasă</a></li>
-                <li><a href="forum.html">Forumuri</a></li>
-                <li><a href="mesaje.html">Mesaje</a></li>
-                <li><a href="events.html">Evenimente</a></li>
-                <li class="active"><a href="profil.html">Profil</a></li>
-            </ul>
-        </nav>
-        <div class="user-profile">
-            <span id="nume_utilizator">Nume Utilizator</span>
-        </div>
-        <button class="button button-red" onclick="logout()">Deconectare</button>
-    </header>
+<header>
+    <h1>ConnectU</h1>
+    <nav>
+        <ul>
+            <li><a href="home.html">Acasă</a></li>
+            <li><a href="forum.html">Forumuri</a></li>
+            <li><a href="mesaje.html">Mesaje</a></li>
+            <li><a href="events.html">Evenimente</a></li>
+            <li class="active"><a href="profil.html">Profil</a></li>
+        </ul>
+    </nav>
+    <div class="user-profile">
+        <span id="nume_utilizator">Nume Utilizator</span>
+    </div>
+    <button class="button button-red" onclick="logout()">Deconectare</button>
+    <button class="button button-red" onclick="deleteAccount()">Șterge Contul</button>
+</header>
+<section class="content">
+    <h2>Profilul Meu</h2>
+    <div class="profile-info">
+        <img src="avatar.png" alt="Avatarul meu">
+        <h3><span id="nume">Numele Meu</span></h3>
+        <p>Email: <span id="email">nume@exemplu.com</span></p>
+        <p>Data de naștere: <span id="data_nastere">01 ianuarie 2000</span></p>
+        <p>Locație: <span id="locatie">Orașul Meu</span></p>
 
-    <section class="content">
-        <h2>Profilul Meu</h2>
-        <div class="profile-info">
-            <img src="avatar.jpg" alt="Avatarul meu">
-            <h3><span id="nume">Numele Meu</span></h3>
-            <p>Email: <span id="email">nume@exemplu.com</span></p>
-            <p>Data de naștere: <span id="data_nastere">01 ianuarie 2000</span></p>
-            <p>Locație: <span id="locatie">Orașul Meu</span></p>
-
-            <button id="edit-button" class="button button-blue" onclick="openEditPopup()">Editează</button>
-        </div>
-
-        <div class="joined-events">
-            <h2>Evenimente la care am participat</h2>
-            <ul id="joined-events-list">
-                </ul>
-        </div>
-    </section>
-
-    <div id="edit-popup" class="popup">
-        <div class="popup-content">
-            <span class="close-button" onclick="closeEditPopup()">&times;</span>
-            <div class="edit-fields">
-                <label for="edit_nume">Nume:</label>
-                <input type="text" id="edit_nume" value="Numele Meu"><br>
-                <label for="edit_email">Email:</label>
-                <input type="email" id="edit_email" value="nume@exemplu.com"><br>
-                <label for="edit_data_nastere">Data de naștere:</label>
-                <input type="date" id="edit_data_nastere" value="2000-01-02"><br>
-                <label for="edit_locatie">Locație:</label>
-                <input type="text" id="edit_locatie" value="Orașul Meu"><br>
-            </div>
-            
-            <button class="button button-blue" onclick="saveProfileChanges()">Salvează</button>
-        </div>
+        <button class="button button-blue" onclick="openEditFields()">Editează</button>
+        <button class="button button-blue" onclick="saveProfileChanges()">Salvează</button>
     </div>
 
-    <script src="/app/src/main/backend/js/logout.js"></script>
-    <script src="/app/src/main/backend/js/display_joined_events.js"></script>
-    <script src="/app/src/main/backend/js/edit_profile.js"></script>
+    <div class="joined-events">
+        <h2>Evenimente la care am participat</h2>
+        <ul id="joined-events-list">
+        </ul>
+    </div>
+</section>
 
 </body>
 </html>

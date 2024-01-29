@@ -1,26 +1,23 @@
+const http = require('http');
 const express = require('express');
 const mysql = require('mysql2');
 const bodyParser = require('body-parser');
 const bcrypt = require('bcrypt');
 const session = require('express-session');
-const http = require('http');
-const socketIO = require('socket.io');
 const path = require('path');
+const nodemailer = require('nodemailer');
 
 const app = express();
 const server = http.createServer(app);
-const io = socketIO(server);
 
 const port = 3000;
 
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 app.use(express.static(path.join(__dirname, 'frontend')));
-app.use('/js', express.static(path.join(__dirname, 'js')));
+app.use('/static', express.static(path.join(__dirname, 'public')));
+app.use('/js', express.static(path.join(__dirname, 'js'), { "Content-Type": `text/javascript` }));
 
-// Adaugă tipurile MIME asociate extensiilor în express.static.mime.types
-express.static.mime.types['js'] = 'application/javascript';
-express.static.mime.types['css'] = 'text/css';
 
 app.use(session({
     secret: 'secretul_sesiunii',
@@ -42,6 +39,27 @@ db.connect((err) => {
     }
     console.log('Conectat la baza de date MySQL');
 });
+async function sendConfirmationEmail(email) {
+    try {
+        const mailOptions = {
+            from: 'freverfan@gmail.com',
+            to: email,
+            subject: 'Confirmare creare cont',
+            text: 'Bine ai venit! Contul tău a fost creat cu succes.',
+        };
+
+        // Trimite e-mailul
+        await transporter.sendMail(mailOptions);
+
+        console.log('E-mail de confirmare trimis cu succes');
+        // Întoarce o valoare sau execută o acțiune suplimentară dacă este necesar
+    } catch (error) {
+        console.error('Eroare la trimiterea e-mailului de confirmare:', error);
+        // Gestionați eroarea într-un mod adecvat, de exemplu, aruncând o excepție sau returnând o valoare de eroare
+        throw error;
+    }
+}
+
 
 app.post('/register', async (req, res) => {
     try {
@@ -58,7 +76,7 @@ app.post('/register', async (req, res) => {
 
         // Executați interogarea MySQL pentru a insera datele în baza de date
         const sql = 'INSERT INTO utilizatori (nume_utilizator, adresa_email, parola) VALUES (?, ?, ?)';
-        db.query(sql, [username, email, hashedPassword], (err, result) => {
+        db.query(sql, [username, email, hashedPassword], (err) => {
             if (err) {
                 console.error('Eroare la inserarea datelor:', err);
                 res.status(500).json({ error: 'Eroare la înregistrare' });
@@ -66,8 +84,9 @@ app.post('/register', async (req, res) => {
             }
 
             console.log('Înregistrare reușită');
-            res.redirect('/home'); // Redirecționează către pagina de home după înregistrare reușită
+            res.redirect('/home');
         });
+        await sendConfirmationEmail(email);
     } catch (error) {
         console.error(error);
         res.status(500).json({ error: 'Eroare la înregistrare' });
@@ -115,7 +134,7 @@ app.post('/logout', (req, res) => {
                 console.log('Deconectare reușită');
                 res.status(200).json({ message: 'Deconectare reușită' });
             }
-        });        
+        });
     } catch (error) {
         console.error('Eroare la deconectare:', error);
         res.status(500).json({ error: 'Eroare la deconectare' });
@@ -235,9 +254,47 @@ app.get('/get-user-profile', async (req, res) => {
         res.status(500).json({ error: 'Eroare la obținerea datelor din baza de date' });
     }
 });
-app.get('/app/src/main/backend/js/events.js', (req, res) => {
-    res.setHeader('Content-Type', 'text/javascript');
-    res.sendFile(__dirname + '/app/src/main/backend/js/events.js');
+
+// Configurare pentru serviciul de e-mail (înlocuiește cu detaliile tale)
+const transporter = nodemailer.createTransport({
+    service: 'gmail',
+    auth: {
+        user: 'ghiriti11@gmail.com',
+        pass: 'Marco180602',
+    },
 });
 
+app.post('/delete-account', async (req, res) => {
+    try {
+        // Verifică dacă utilizatorul este autentificat (poți folosi middleware-ul de autentificare a sesiunii)
+        if (!req.session || !req.session.user) {
+            return res.status(401).json({ error: 'Nu există sesiune autentificată' });
+        }
 
+        const userId = req.session.user.id;
+
+        // Execută interogarea MySQL pentru ștergerea utilizatorului din baza de date
+        const deleteSql = 'DELETE FROM utilizatori WHERE id = ?';
+        db.query(deleteSql, [userId], (deleteErr, deleteResult) => {
+            if (deleteErr) {
+                console.error('Eroare la ștergerea contului din baza de date:', deleteErr);
+                res.status(500).json({ error: 'Eroare la ștergerea contului' });
+            } else {
+                console.log('Contul a fost șters cu succes');
+                // Distrugerea sesiunii pentru a realiza deconectarea
+                req.session.destroy((destroyErr) => {
+                    if (destroyErr) {
+                        console.error('Eroare la deconectare:', destroyErr);
+                        res.status(500).json({ error: 'Eroare la deconectare' });
+                    } else {
+                        console.log('Deconectare reușită');
+                        res.status(200).json({ message: 'Contul a fost șters cu succes și deconectat' });
+                    }
+                });
+            }
+        });
+    } catch (error) {
+        console.error('Eroare la ștergerea contului:', error);
+        res.status(500).json({ error: 'Eroare la ștergerea contului' });
+    }
+});

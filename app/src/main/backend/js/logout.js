@@ -1,4 +1,4 @@
-export function logout() {
+function logout() {
     const xhr = new XMLHttpRequest();
     xhr.open('POST', '/logout');
     xhr.setRequestHeader('Content-Type', 'application/json');
