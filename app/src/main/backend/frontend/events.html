@@ -8,6 +8,7 @@
     <link rel="stylesheet" type="text/css" href="events.css">
 </head>
 <body>
+<div class="slider-thumb">
     <header>
         <h1>ConnectU</h1>
         <nav>
@@ -20,7 +21,7 @@
             </ul>
         </nav>
         <div class="user-profile">
-            <span>Nume Utilizator</span>
+            <span id="nume_utilizator">Nume Utilizator</span>
         </div>
     </header>
 
@@ -44,10 +45,20 @@
         </div>
         <button id="openCreateEventPopup">Creează Eveniment</button>
 
-        <ul id="eventsList">
+        <h3>Evenimente disponibile</h3>
+        <ul id="eventsList" class="container">
             <!-- Aici vor fi afișate evenimentele -->
         </ul>
+        <h3>Evenimentele tale</h3>
+        <ul id="joinedEventsList" class="container">
+            <!-- Aici vor fi afișate evenimentele la care a aderat utilizatorul -->
+        </ul>
     </section>
-    <script src="/app/src/main/backend/js/events.js" type="text/javascript" ></script>
+
+    <script src="/js/events.js" type="text/javascript"></script>
+    <script src="/js/createEvent.js" type="text/javascript"></script>
+    <script src="/js/displayEvents.js" type="text/javascript"></script>
+    <script src="/js/menu.js" type="text/javascript"></script>
+    </div>
 </body>
 </html>

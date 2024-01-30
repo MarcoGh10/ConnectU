@@ -24,9 +24,12 @@ header {
 }
 
 body {
-    font-family: Arial, sans-serif;
+    font-family: Roboto, sans-serif;
     margin: 20px;
     padding: 0;
+    height: 100vh;
+    background: linear-gradient(90deg, #d0d0d0, #0095ff);
+
 }
 
 h1 {

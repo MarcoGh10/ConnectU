@@ -1,90 +1,114 @@
-document.addEventListener('DOMContentLoaded', () => {
-    const openCreateEventPopupBtn = document.getElementById('openCreateEventPopup');
-    const createEventPopup = document.getElementById('createEventPopup');
-    const closeCreateEventPopupBtn = document.getElementById('closeCreateEventPopup');
-    const createEventForm = document.getElementById('createEventForm');
+document.addEventListener('DOMContentLoaded', async () => {
     const eventsList = document.getElementById('eventsList');
+    const joinedEventsList = document.getElementById('joinedEventsList');
+    const myEventsList = document.getElementById('myEventsList');
 
-    openCreateEventPopupBtn.addEventListener('click', () => {
-        openPopup(createEventPopup);
-    });
+    const openCreateEventPopupButton = document.getElementById('openCreateEventPopup');
+    const closeCreateEventPopupButton = document.getElementById('closeCreateEventPopup');
+    const createEventForm = document.getElementById('createEventForm');
 
-    closeCreateEventPopupBtn.addEventListener('click', () => {
-        closePopup(createEventPopup);
-    });
+    openCreateEventPopupButton.addEventListener('click', () => openPopup('createEventPopup'));
+    closeCreateEventPopupButton.addEventListener('click', () => closePopup('createEventPopup'));
 
     createEventForm.addEventListener('submit', async (event) => {
         event.preventDefault();
-        const eventData = collectEventData(); // Colectarea datelor evenimentului din formular
+        await createEvent();
+        closePopup('createEventPopup');
+    });
 
+    async function createEventListItem(event, container) {
+        const listItem = document.createElement('li');
+        listItem.classList.add('event-card');
+
+        listItem.innerHTML = `
+            <div>
+                <strong>${event.titlu}</strong>
+                <p>${event.descriere}</p>
+                <p>Data și oră: ${event.data_eveniment}</p>
+            </div>
+            <button class="delete-button" onclick="deleteEvent(${event.id}, '${container.id}')">Șterge Eveniment</button>
+        `;
+
+        container.appendChild(listItem);
+    }
+
+    async function deleteEvent(eventId, containerId) {
         try {
-            const response = await saveEventData('/create-event', eventData);
-            handleEventCreation(response, createEventPopup, eventsList);
+            const response = await fetch(`/delete-event/${eventId}`, { method: 'DELETE' });
+            const result = await response.json();
+
+            if (response.ok) {
+                console.log(result.message);
+                if (containerId === 'eventsList') {
+                    await displayEvents();
+                } else if (containerId === 'joinedEventsList') {
+                    await displayJoinedEvents();
+                } else if (containerId === 'myEventsList') {
+                    await displayMyEvents();
+                }
+            } else {
+                console.error('Eroare la ștergerea evenimentului:', result.error);
+            }
         } catch (error) {
-            console.error('Eroare:', error);
+            console.error('Eroare la ștergerea evenimentului:', error);
         }
-    });
-
-    function openPopup(popupElement) {
-        popupElement.style.display = 'block';
     }
 
-    function closePopup(popupElement) {
-        popupElement.style.display = 'none';
+    async function clearList(list) {
+        while (list.firstChild) {
+            list.removeChild(list.firstChild);
+        }
     }
 
-    function collectEventData() {
-        const title = document.getElementById('eventTitle').value;
-        const description = document.getElementById('eventDescription').value;
-        const dateTime = document.getElementById('eventDateTime').value;
-
-        return { titlu: title, descriere: description, data_eveniment: dateTime };
+    function openPopup(popupId) {
+        const popup = document.getElementById(popupId);
+        if (popup) {
+            popup.style.display = 'block';
+        }
     }
 
-    async function saveEventData(url, data) {
-        return await fetch(url, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify(data),
-        });
+    function closePopup(popupId) {
+        const popup = document.getElementById(popupId);
+        if (popup) {
+            popup.style.display = 'none';
+        }
     }
 
-    async function handleEventCreation(response, popupElement, listElement) {
-        const data = await response.json();
-        console.log(data.message);
-
-        closePopup(popupElement);
-        refreshEventsList(listElement);
+    async function displayEvents() {
+        try {
+            const response = await fetch('/get-events');
+            const eventsData = await response.json();
+            clearList(eventsList);
+            eventsData.forEach(event => createEventListItem(event, eventsList));
+        } catch (error) {
+            console.error('Eroare la afișarea evenimentelor:', error);
+        }
     }
 
-    function refreshEventsList(listElement) {
-        fetch('/recommended-events')
-            .then((response) => response.json())
-            .then((data) => {
-                displayEvents(data, listElement);
-            })
-            .catch((error) => {
-                console.error('Eroare la obținerea evenimentelor:', error);
-            });
+    async function displayJoinedEvents() {
+        try {
+            const response = await fetch('/get-joined-events');
+            const joinedEventsData = await response.json();
+            clearList(joinedEventsList);
+            joinedEventsData.forEach(event => createEventListItem(event, joinedEventsList));
+        } catch (error) {
+            console.error('Eroare la afișarea evenimentelor la care a aderat utilizatorul:', error);
+        }
     }
 
-    function displayEvents(events, listElement) {
-        listElement.innerHTML = '';
-
-        events.forEach((event) => {
-            const li = document.createElement('li');
-            li.classList.add('event-card');
-            li.innerHTML = `
-                <h3 class="event-title">${event.titlu}</h3>
-                <p class="event-description">${event.descriere}</p>
-            `;
-            listElement.appendChild(li);
-        });
+    async function displayMyEvents() {
+        try {
+            const response = await fetch('/get-my-events');
+            const myEventsData = await response.json();
+            clearList(myEventsList);
+            myEventsData.forEach(event => createEventListItem(event, myEventsList));
+        } catch (error) {
+            console.error('Eroare la afișarea evenimentelor create de utilizator:', error);
+        }
     }
-s
-    closeCreateEventPopupBtn.addEventListener('click', () => {
-        closePopup(createEventPopup);
-    });
+
+    // Inițializare afișare evenimente
+    displayEvents();
+    displayJoinedEvents();
+    displayMyEvents();
 });

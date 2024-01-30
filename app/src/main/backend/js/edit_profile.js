@@ -1,7 +1,3 @@
-// Importează bibliotecile necesare
-import axios from 'axios';
-
-// Definirea funcțiilor
 function openEditFields() {
     // Verifică dacă elementul există
     const editNumeElement = document.querySelector('#edit_nume');
@@ -45,13 +41,21 @@ function saveProfileChanges() {
     // Verificare dacă câmpurile sunt completate
     if (nume !== '' && email !== '' && data_nastere !== '' && locatie !== '') {
         // Trimite datele către server pentru a le salva în baza de date
-        axios.post('/update-user-profile', {
-            nume,
-            email,
-            data_nastere,
-            locatie
-        })
-            .then(response => response.data)
+        const requestOptions = {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                nume,
+                email,
+                data_nastere,
+                locatie
+            })
+        };
+
+        fetch('/update-user-profile', requestOptions)
+            .then(response => response.json())
             .then(updatedData => {
                 console.log('Profilul a fost actualizat:', updatedData);
                 closeEditPopup(); // Închide câmpurile de editare după ce profilul a fost actualizat cu succes
@@ -69,3 +73,22 @@ document.getElementById('edit-button').addEventListener('click', openEditFields)
 
 // Ascultător pentru butonul de salvare
 document.getElementById('save-profile-button').addEventListener('click', saveProfileChanges);
+document.addEventListener('DOMContentLoaded', () => {
+    const numeElement = document.getElementById('nume');
+    const emailElement = document.getElementById('email');
+
+    function fetchUserProfile() {
+        fetch('/get-user-profile')  // Înlocuiește cu ruta corespunzătoare din server
+            .then(response => response.json())
+            .then(userProfile => {
+                // Actualizează informațiile în HTML
+                numeElement.textContent = userProfile.nume;
+                emailElement.textContent = userProfile.email;
+            })
+            .catch(error => {
+                console.error('Eroare la obținerea profilului utilizatorului:', error);
+            });
+    }
+
+    fetchUserProfile();
+});

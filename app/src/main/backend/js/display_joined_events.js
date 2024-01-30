@@ -1,22 +1,21 @@
-document.addEventListener('DOMContentLoaded', () => {
+// Funcție pentru a afișa evenimentele la care utilizatorul a dat "join"
+function displayJoinedEvents(joinedEvents) {
+    const noEventsMessage = document.getElementById('no-events-message');
     const joinedEventsList = document.getElementById('joined-events-list');
 
-    // Funcție pentru a afișa evenimentele la care utilizatorul a dat "join"
-    function displayJoinedEvents(joinedEvents) {
+    if (joinedEvents.length === 0) {
+        noEventsMessage.style.display = 'block'; // Afișează mesajul dacă nu există evenimente
+        joinedEventsList.style.display = 'none'; // Ascunde lista de evenimente
+    } else {
+        noEventsMessage.style.display = 'none'; // Ascunde mesajul dacă există evenimente
+        joinedEventsList.style.display = 'block'; // Afișează lista de evenimente
+
         joinedEventsList.innerHTML = '';
 
         joinedEvents.forEach(event => {
             const eventItem = document.createElement('li');
             eventItem.textContent = `${event.title} - ${event.date}`; // Afișăm titlul și data evenimentului
-
             joinedEventsList.appendChild(eventItem);
         });
     }
-    const userJoinedEvents = [
-        { title: 'Nume Eveniment 1', date: '25 noiembrie 2023' },
-        { title: 'Nume Eveniment 2', date: '28 noiembrie 2023' },
-        // Adăugați alte evenimente la care utilizatorul a dat "join"
-    ];
-
-    displayJoinedEvents(userJoinedEvents);
-});
+}

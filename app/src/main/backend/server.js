@@ -214,7 +214,6 @@ app.get('/recommended-events', async (req, res) => {
     }
 });
 
-// Funcție pentru a obține evenimentele recomandate
 function getRecommendedEvents() {
     return new Promise((resolve, reject) => {
         const sql = 'SELECT * FROM evenimente';
@@ -239,15 +238,13 @@ app.listen(port, () => {
 
 app.get('/get-user-profile', async (req, res) => {
     try {
-        const userEmail = req.session.user.email; // Adresa de email a utilizatorului autentificat
+        const userEmail = req.session.user.email;
 
-        const userProfile = await getUserByEmail(userEmail); // Obține profilul utilizatorului după email
+        const userProfile = await getUserByEmail(userEmail);
 
         if (!userProfile) {
             return res.status(404).json({ error: 'Profilul utilizatorului nu a fost găsit' });
         }
-
-        // Trimite datele profilului utilizatorului către client (interfața de utilizator)
         res.status(200).json(userProfile);
     } catch (error) {
         console.error('Eroare la obținerea profilului utilizatorului:', error);
@@ -255,12 +252,11 @@ app.get('/get-user-profile', async (req, res) => {
     }
 });
 
-// Configurare pentru serviciul de e-mail (înlocuiește cu detaliile tale)
 const transporter = nodemailer.createTransport({
     service: 'gmail',
     auth: {
-        user: 'ghiriti11@gmail.com',
-        pass: 'Marco180602',
+        user: 'freverfan@gmail.com',
+        pass: 'Money10@',
     },
 });
 
@@ -298,3 +294,159 @@ app.post('/delete-account', async (req, res) => {
         res.status(500).json({ error: 'Eroare la ștergerea contului' });
     }
 });
+app.get('/get-events', async (req, res) => {
+    try {
+        const sql = 'SELECT * FROM evenimente';
+        db.query(sql, (err, results) => {
+            if (err) {
+                console.error('Eroare la obținerea evenimentelor:', err);
+                res.status(500).json({ error: 'Eroare la obținerea evenimentelor' });
+                return;
+            }
+
+            console.log('Evenimentele obținute cu succes');
+            res.status(200).json(results);
+        });
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ error: 'Eroare la obținerea evenimentelor' });
+    }
+});
+
+app.post('/join-event/:eventId', async (req, res) => {
+    try {
+        const userId = req.session.user.id;
+        const eventId = req.params.eventId;
+
+        // Execută interogarea MySQL pentru a adăuga înregistrarea în tabelul de participare la eveniment
+        const sql = 'INSERT INTO participare_eveniment (id_utilizator, id_eveniment) VALUES (?, ?)';
+        db.query(sql, [userId, eventId], (err, result) => {
+            if (err) {
+                console.error('Eroare la aderarea la eveniment:', err);
+                res.status(500).json({ error: 'Eroare la aderarea la eveniment' });
+                return;
+            }
+
+            console.log('Aderare la eveniment cu succes');
+            res.status(200).json({ message: 'Aderare la eveniment cu succes' });
+        });
+    } catch (error) {
+        console.error('Eroare la aderarea la eveniment:', error);
+        res.status(500).json({ error: 'Eroare la aderarea la eveniment' });
+    }
+});
+
+app.get('/get-joined-events', async (req, res) => {
+    try {
+        const userId = req.session.user.id;
+
+        const sql = `
+            SELECT e.id, e.titlu, e.descriere, e.data_eveniment
+            FROM evenimente e
+            INNER JOIN participare_eveniment pe ON e.id = pe.id_eveniment
+            WHERE pe.id_utilizator = ?
+        `;
+        db.query(sql, [userId], (err, results) => {
+            if (err) {
+                console.error('Eroare la obținerea evenimentelor la care a aderat utilizatorul:', err);
+                res.status(500).json({ error: 'Eroare la obținerea evenimentelor la care a aderat utilizatorul' });
+                return;
+            }
+
+            console.log('Evenimentele la care a aderat utilizatorul obținute cu succes');
+            res.status(200).json(results);
+        });
+    } catch (error) {
+        console.error('Eroare la obținerea evenimentelor la care a aderat utilizatorul:', error);
+        res.status(500).json({ error: 'Eroare la obținerea evenimentelor la care a aderat utilizatorul' });
+    }
+});
+app.get('/get-other-events', async (req, res) => {
+    try {
+        const userId = req.session.user.id;
+
+        // Execută interogarea MySQL pentru a obține evenimentele create de alții
+        const sql = `
+            SELECT e.id, e.titlu, e.descriere, e.data_eveniment
+            FROM evenimente e
+            WHERE e.id NOT IN (
+                SELECT pe.id_eveniment
+                FROM participare_eveniment pe
+                WHERE pe.id_utilizator = ?
+            )
+        `;
+        db.query(sql, [userId], (err, results) => {
+            if (err) {
+                console.error('Eroare la obținerea evenimentelor create de alții:', err);
+                res.status(500).json({ error: 'Eroare la obținerea evenimentelor create de alții' });
+                return;
+            }
+
+            console.log('Evenimentele create de alții obținute cu succes');
+            res.status(200).json(results);
+        });
+    } catch (error) {
+        console.error('Eroare la obținerea evenimentelor create de alții:', error);
+        res.status(500).json({ error: 'Eroare la obținerea evenimentelor create de alții' });
+    }
+});
+app.delete('/delete-event/:eventId', async (req, res) => {
+    try {
+        const userId = req.session.user.id;
+        const eventId = req.params.eventId;
+
+        // Execută interogarea MySQL sau metoda necesară pentru ștergerea înregistrării din tabela participare_eveniment
+        const sql = 'DELETE FROM participare_eveniment WHERE id_eveniment = ? AND id_utilizator = ?';
+        db.query(sql, [eventId, userId], (err, result) => {
+            if (err) {
+                console.error('Eroare la ștergerea evenimentului:', err);
+                res.status(500).json({ error: 'Eroare la ștergerea evenimentului' });
+            } else {
+                console.log('Eveniment șters cu succes din tabela participare_eveniment');
+                res.status(200).json({ message: 'Eveniment șters cu succes' });
+            }
+        });
+    } catch (error) {
+        console.error('Eroare la ștergerea evenimentului:', error);
+        res.status(500).json({ error: 'Eroare la ștergerea evenimentului' });
+    }
+});
+// Adaugă la sfârșitul fișierului server.js
+
+app.get('/get-my-events', async (req, res) => {
+    try {
+        // Verifică dacă utilizatorul este autentificat
+        if (!req.session || !req.session.user) {
+            return res.status(401).json({ error: 'Nu există sesiune autentificată' });
+        }
+
+        const userId = req.session.user.id;
+
+        const sql = `
+            SELECT e.id, e.titlu, e.descriere, e.data_eveniment
+            FROM evenimente e
+            INNER JOIN participare_eveniment pe ON e.id = pe.id_eveniment
+            WHERE pe.id_utilizator = ?
+        `;
+        db.query(sql, [userId], (err, results) => {
+            if (err) {
+                console.error('Eroare la obținerea evenimentelor la care participă utilizatorul:', err);
+                res.status(500).json({ error: 'Eroare la obținerea evenimentelor la care participă utilizatorul' });
+                return;
+            }
+
+            console.log('Evenimentele la care participă utilizatorul obținute cu succes');
+            res.status(200).json(results);
+        });
+    } catch (error) {
+        console.error('Eroare la obținerea evenimentelor la care participă utilizatorul:', error);
+        res.status(500).json({ error: 'Eroare la obținerea evenimentelor la care participă utilizatorul' });
+    }
+});
+
+
+
+
+
+
+

@@ -1,4 +1,5 @@
 <!DOCTYPE html>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap">
 <html lang="ro">
 <head>
     <meta charset="UTF-8">
@@ -9,7 +10,7 @@
 </head>
 <body>
     <header>
-        <h1>Mesaje</h1>
+        <h1>ConnectU</h1>
         <nav>
             <ul>
                 <li><a href="home.html">Acasă</a></li>
@@ -20,7 +21,7 @@
             </ul>
         </nav>
         <div class="user-profile">
-            <span>Nume Utilizator</span>
+            <span id="nume_utilizator">Nume Utilizator</span>
         </div>
     </header>
     <div id="conversations">
@@ -38,6 +39,7 @@
     <!-- Script pentru gestionarea conversațiilor -->
     <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
     <script src="/socket.io/socket.io.js"></script>
-    <script src="/app/src/main/backend/js/mesaje.js"></script>
+    <script src="/js/mesaje.js"></script>
+    <script src="/js/menu.js"></script>
 </body>
 </html>

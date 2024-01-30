@@ -1,9 +1,8 @@
 document.addEventListener('DOMContentLoaded', () => {
     const eventsList = document.querySelector('.event-cards');
 
-    // Funcție pentru a afișa evenimentele pe pagină
     function displayEvents(events) {
-        eventsList.innerHTML = ''; // Curățăm lista de evenimente existente
+        eventsList.innerHTML = '';
 
         if (events.length === 0) {
             const noEventsMessage = document.createElement('p');
@@ -13,17 +12,28 @@ document.addEventListener('DOMContentLoaded', () => {
             events.forEach(event => {
                 const eventCard = document.createElement('div');
                 eventCard.classList.add('event-card');
+
+                // Verifică dacă utilizatorul a participat deja la eveniment
+                const participatedClass = event.participated ? 'participated' : '';
+
                 eventCard.innerHTML = `
-                    <h3 class="event-title">${event.title}</h3>
-                    <p class="event-description">${event.description}</p>
-                    <button class="join-button" onclick="joinEvent('${event.id}')">Participă</button>
-                `;
+                <h3 class="event-title">${event.titlu}</h3>
+                <p class="event-description">${event.descriere}</p>
+                <p class="event-date">${formatDateTime(event.data)}</p> 
+                <button class="join-button ${participatedClass}" onclick="joinEvent('${event.id}', this)" ${event.participated ? 'disabled' : ''}>Participă</button>
+            `;
+
                 eventsList.appendChild(eventCard);
             });
         }
     }
 
-    // Funcție pentru a obține evenimentele recomandate de la server
+    function formatDateTime(dateTimeString) {
+        const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric', hour: 'numeric', minute: 'numeric' };
+        const dateTime = new Date(dateTimeString);
+        return dateTime.toLocaleDateString('ro-RO', options);
+    }
+
     function fetchRecommendedEvents() {
         fetch('/recommended-events')
             .then(response => response.json())
@@ -38,7 +48,25 @@ document.addEventListener('DOMContentLoaded', () => {
     fetchRecommendedEvents();
 });
 
-function joinEvent(eventId) {
-    console.log(`Te-ai alăturat evenimentului cu ID-ul ${eventId}`);
-}
+async function joinEvent(eventId, button) {
+    try {
+        if (button.disabled || button.classList.contains('participated')) {
+            return;
+        }
 
+        const response = await fetch(`/join-event/${eventId}`, { method: 'POST' });
+        const result = await response.json();
+
+        if (response.ok) {
+            console.log(result.message);
+            // Actualizează butonul și adaugă un mesaj corespunzător
+            button.textContent = 'Te-ai alaturat';
+            button.classList.add('participated'); // Adaugă clasa pentru culoarea specifică
+            button.disabled = true; // Dezactivează butonul după participare
+        } else {
+            console.error('Eroare la participarea la eveniment:', result.error);
+        }
+    } catch (error) {
+        console.error('Eroare la participarea la eveniment:', error);
+    }
+}

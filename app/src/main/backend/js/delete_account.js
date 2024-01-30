@@ -1,5 +1,3 @@
-// Adaugă acest cod în fișierul delete_account.js
-
 function deleteAccount() {
     // Afișează un mesaj de confirmare înainte de a efectua ștergerea
     const confirmDelete = confirm("Sunteți sigur că doriți să ștergeți contul? Această acțiune este ireversibilă.");

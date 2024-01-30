@@ -1,4 +1,5 @@
 <!DOCTYPE html>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap">
 <html lang="ro">
 <head>
     <meta charset="UTF-8">
@@ -6,10 +7,6 @@
     <title>Profil - ConnectU</title>
     <link rel="stylesheet" type="text/css" href="profil.css">
     <link rel="stylesheet" type="text/css" href="menu.css">
-    <script src="/js/delete_account.js"></script>
-    <script src="/js/logout.js"></script>
-    <script src="/js/display_joined_events.js"></script>
-    <script src="/js/edit_profile.js"></script>
 </head>
 <body>
 <header>
@@ -38,16 +35,24 @@
         <p>Data de naștere: <span id="data_nastere">01 ianuarie 2000</span></p>
         <p>Locație: <span id="locatie">Orașul Meu</span></p>
 
-        <button class="button button-blue" onclick="openEditFields()">Editează</button>
-        <button class="button button-blue" onclick="saveProfileChanges()">Salvează</button>
+        <button class="button button-blue" id="edit-button" onclick="openEditFields()">Editează</button>
+        <button class="button button-blue" id="save-profile-button"  onclick="saveProfileChanges()">Salvează</button>
     </div>
 
     <div class="joined-events">
         <h2>Evenimente la care am participat</h2>
         <ul id="joined-events-list">
+            <!-- Aici vor fi afișate evenimentele la care a participat utilizatorul -->
         </ul>
+        <p id="no-events-message" style="display: none;">Nu ai participat la niciun eveniment.</p>
     </div>
+
 </section>
+<script src="/js/delete_account.js"></script>
+<script src="/js/logout.js"></script>
+<script src="/js/display_joined_events.js"></script>
+<script src="/js/edit_profile.js"></script>
+<script src="/js/menu.js"></script>
 
 </body>
 </html>
